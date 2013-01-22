@@ -1,9 +1,9 @@
 *** Settings ***
 Library 		Selenium2Library
 Library			application_utilities.py
-Resource		..\\Common\\Common_Variables.txt
-Resource		..\\Common\\Objects_Respository.txt
-Resource		..\\Common\\Test_Data.txt
+Resource		..//Common//Common_Variables.txt
+Resource		..//Common//Objects_Respository.txt
+Resource		..//Common//Test_Data.txt
 
 *** Keywords ***
 
