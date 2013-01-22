@@ -1,0 +1,331 @@
+*** Settings ***
+Library 		Selenium2Library
+Library 		Collections
+Resource		..\\Common\\Common_Variables.txt
+Resource		..\\Common\\Keywords_lib.txt
+Resource		..\\Common\\Objects_Respository.txt
+Resource		..\\Common\\Test_Data.txt
+
+*** Test Cases*** 
+
+
+#Testcase Name											#keyword						#Argument1				#Argument2			#Argument3
+
+Launch Application				
+							[Documentation]	To Launch CommCare application.
+							[Tags]	Smoke		Regression
+														Launch Browser
+
+Cases -> Case Create	
+							[Documentation]	To create a new case using Case Create Form.
+							[Tags]	Regression
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Create
+														Submit Form
+														Validate Error Message
+														Form Set Value Text				${CC_ques1}				TestCaseCreate	
+														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans2}
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Select Form						Case Update
+														Validate Expected Message		${val_exp_message5}
+														Log out of Cloudcare
+														Open Cloudcare					${username2}			${password2}
+														Select Report					Submit History
+														Report Filters					indium1
+														Validate Report					Case Create				TestCaseCreate
+														Log out of Cloudcare
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Create
+														Form Set Value Text				${CC_ques1}				TestCaseCreate
+														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans1}
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Select Form						Case Update
+														Select case from list			Name					TestCaseCreate
+														Log out of Cloudcare														
+														
+Cases -> Case Update	
+							[Documentation]	To update a case using Case Update Form.
+							[Tags]	Regression
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Update
+														Select case from list			Name					TestCaseCreate			
+														Open Case Form
+														Form Set Value Text				${CUP_ques1}			Test
+														Form Set Value Choice			${CUP_ques2}			C
+														Form Set Value Checkbox			${CUP_ques3}			C
+														Form Set Value Text				${CUP_ques4}			z	
+														Submit Form
+														Validate Error Message
+														Form Set Value Text				${CUP_ques4}			123
+														Form Set Value Text				${CUP_ques5}			01/10/2013
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Select Form						Case Update
+														Select case from list			Name					TestCaseCreate
+														Validate Case Information 		Singleselect			c
+														Validate Case Information		Text					Test	
+														Log out of Cloudcare
+
+
+Cases -> Case Close	
+							[Documentation]	To close a case using Case Update Form.
+							[Tags]	Regression
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Close
+														Select case from list			Name					TestCaseCreate				
+														Open Case Form
+														Submit Form
+														Validate Error Message
+														Form Set Value Choice			${CCL_ques1}			${CCL_radio_ans2}
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Select Form						Case Close
+														Filter Condition   				TestCaseCreate
+														Select case from list			Status					TestCaseCreate				
+														Open Case Form
+														Form Set Value Choice			${CCL_ques1}			${CCL_radio_ans1}
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Select Form						Case Close
+														Validate Expected Message		${val_exp_message5}
+														Log out of Cloudcare
+														
+Cases -> Sub Case Tests -> Sub Case 1
+							[Documentation]	To create a new case using Case Create Form.
+							[Tags]	Regression
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Create	
+														Form Set Value Text				${CC_ques1}				ParentCaseTest
+														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans1}
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Select Form						Case Update
+														Select case from list			Name					ParentCaseTest
+														Log out of Cloudcare
+														
+Cases -> Sub Case Tests -> Sub Case 2
+							[Documentation]	To create a Sub Case for Parent Case.
+							[Tags]	Regression														
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Create Sub Case
+														Select case from list			Name					ParentCaseTest			
+														Open Case Form
+														Submit Form
+														Validate Error Message
+														Form Set Value Text				${CSUBC_ques1}			Subcaseparent
+														Form Set Value Text				${CSUBC_ques2}			2
+														Form Set Value Choice			${CSUBC_ques3}			${CSC_radio_ans2}
+														Submit Form
+														Validate Expected Message		${val_exp_message1}	
+														Select Module			    	Sub Case One
+														Select Form						Close Case
+														Filter Condition   				ParentCaseTest
+														Validate Expected Message		${val_exp_message5}
+														Log out of Cloudcare
+														Open Cloudcare					${username2}			${password2}
+														Select Report					Submit History
+														Report Filters					indium1
+														Validate Report					Create Sub Case			cancel
+														Log out of Cloudcare
+
+
+Cases -> Sub Case Tests -> Sub Case 3
+							[Documentation]	To create a Sub Case for Parent Case.
+							[Tags]	Regression															
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Create Sub Case
+														Select case from list			Name					ParentCaseTest			
+														Open Case Form
+														Form Set Value Text				${CSUBC_ques1}			Subcaseparent
+														Form Set Value Text				${CSUBC_ques2}			2
+														Form Set Value Choice			${CSUBC_ques3}			${CSC_radio_ans1}
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Select Module			    	Sub Case One
+														Select Form						Close Case
+														Select case from list			Name					Subcaseparent
+														Validate Case Information 		Parent Case Name		ParentCaseTest
+														Validate Case Information 		Sub Case Number			2
+														Log out of Cloudcare
+
+Cases -> Sub Case Tests -> Sub Case 4
+							[Documentation]	To close Sub Case One.
+							[Tags]	Regression		
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Sub Case One
+														Select Form						Close Case
+														Select case from list			Name					Subcaseparent			
+														Open Case Form
+														Form Set Value Choice			${CC_Ques}				1. Yes
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Select Form						Close Case
+														Validate Expected Message		${val_exp_message5}
+														Select Module			    	Case Tests
+														Select Form						Case Update
+														Select case from list			Name					ParentCaseTest
+														Log out of Cloudcare	
+																											
+														
+Cases -> Sub Case Tests -> Sub Case 5
+							[Documentation]	To close Parent Case.
+							[Tags]	Regression
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Close
+														Select case from list			Name					ParentCaseTest
+														Open Case Form
+														Form Set Value Choice			${CCL_ques1}			${CCL_radio_ans1}
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Select Form						Case Update
+														Validate Expected Message		${val_exp_message5}
+														Select Module			    	Sub Case One
+														Select Form						Close Case
+														Select case from list			Name					Subcaseparent
+														Log out of Cloudcare	
+																												
+														
+Cases -> Sub Case Tests -> Sub Case 6
+							[Documentation]	To create Multiple Sub Cases.
+							[Tags]	Regression
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Create Multiple Sub Cases
+														Select case from list			Name					Heart patient
+														Open Case Form
+														Form Set Value Text				${CMSC_ques1}			subcase1test
+														Form Set Value Text				${CMSC_ques2}			2
+														Form Set Value Text				${CMSC_ques3}			subcase2test
+														Form Set Value Text				${CMSC_ques4}			01/11/2013
+														Submit Form
+														Validate Expected Message		${val_exp_message1}	
+														Select Module			    	Sub Case One
+														Select Form						Close Case
+														Select case from list			Name					subcase1test
+														Validate Case Information		Parent Case Name		Heart patient
+														Validate Case Information		Sub Case Number			2
+														Select Module			    	Sub Case Two
+														Select Form						Close Case
+														Select case from list			Name					subcase2test
+														Validate Case Information		Parent Case Name		Heart patient
+														Validate Case Information		Sub Case Date			2013-01-11														
+														Log out of Cloudcare
+														
+														
+														
+Cases -> Case Tests -> Case Sharing 1
+							[Documentation]	To create and update case with different users.
+							[Tags]	Regression
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Create
+														Form Set Value Text				${CC_ques1}				Heart patient Test1
+														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans1}
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Select Form						Case Update
+														Select case from list			Name					Heart patient Test1		
+														Open Case Form
+														Form Set Value Text				${CUP_ques1}			Test
+														Form Set Value Choice			${CUP_ques2}			C
+														Form Set Value Checkbox			${CUP_ques3}			C
+														Form Set Value Text				${CUP_ques4}			1
+														Form Set Value Text				${CUP_ques5}			01/10/2013
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Log out of Cloudcare
+														
+														##Login as Second User and Validate##
+														
+														Open Cloudcare					${username3}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Update
+														Filter Condition   				Heart patient Test1
+														Select case from list			Name					Heart patient Test1
+														Validate Case Information 		Intval					1
+														Validate Case Information 		Singleselect			c														
+														Log out of Cloudcare
+ 													
+
+Cases -> Case Tests -> Case Sharing 2
+							[Documentation]	To validate update case and new case with second user.
+							[Tags]	Regression														
+														Open Cloudcare					${username3}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Update
+														Select case from list			Name					Heart patient Test1
+														Open Case Form
+														Form Set Value Text				${CUP_ques1}			Testing
+														Form Set Value Choice			${CUP_ques2}			A
+														Form Set Value Checkbox			${CUP_ques3}			A
+														Form Set Value Text				${CUP_ques4}			12
+														Form Set Value Text				${CUP_ques5}			01/11/2013
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Select Form						Case Create
+														Form Set Value Text				${CC_ques1}				Validate second user
+														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans1}
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Log out of Cloudcare
+															
+														##Login as First User and Validate##
+														
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Update
+														Select case from list			Name					Heart patient Test1	
+														Validate Case Information 		Text					Testing
+														Validate Case Information 		Dateval					2013-01-11
+														Select case from list			Name					Validate second user
+														Log out of Cloudcare
+	
+Cases -> Case Tests -> Case Sharing 3
+							[Documentation]	To close a case in first user and validate with second user.
+							[Tags]	Regression	
+														Open Cloudcare					${username3}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Close
+														Select case from list			Name					Validate second user
+														Open Case Form
+														Form Set Value Choice			${CCL_ques1}			${CCL_radio_ans1}
+														Submit Form
+														Validate Expected Message		${val_exp_message1}
+														Log out of Cloudcare
+														
+														##Login as First User and Validate##
+														
+														Open Cloudcare					${username3}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
+														Select Form						Case Update
+														Validate Expected Message		${val_exp_message5}
+														Log out of Cloudcare
+														Close Browser
+																					
+														

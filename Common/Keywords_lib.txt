@@ -1,0 +1,150 @@
+*** Settings ***
+Library 		Selenium2Library
+Library			application_utilities.py
+Resource		..\\Common\\Common_Variables.txt
+Resource		..\\Common\\Objects_Respository.txt
+Resource		..\\Common\\Test_Data.txt
+
+*** Keywords ***
+
+Launch Browser			[Arguments]			
+						[Documentation]		Open the CommCareHQ Application
+											Open Browser					    	${app_url}              ${browser}
+											 	
+
+Open Cloudcare          [Arguments]  		${username}		${password}  	  
+						[Documentation]		Login to the Cloudcare application
+											Wait Until Page Contains Element     	${lnk_home_signin}	    ${timeout}
+											Click Link						 		${lnk_home_signin}		
+											Wait Until Page Contains Element    	${txt_login_username}   ${timeout}
+											Input Text                         		${txt_login_username}   ${username}   
+											Input Password			               	${txt_login_password}   ${password}    
+											Click button						 	${btn_login_signin}	
+																					    
+Select Application		[Arguments]			${appname}	
+						[Documentation]		Select the application
+											Wait Until Page Contains Element		${lnk_apps_loc1}${appname}${lnk_apps_loc2}				${timeout}
+											Click Link								${lnk_apps_loc1}${appname}${lnk_apps_loc2}
+ 					 
+Select Module	  		[Arguments]		 	${modname} 
+						[Documentation]		Select the Module
+											Wait Until Page Contains Element		${lnk_mod_loc1}${modname}${lnk_mod_loc2}				${timeout}
+											Click Link								${lnk_mod_loc1}${modname}${lnk_mod_loc2}											
+	  
+Select Form		  		[Arguments]		 	${formname} 
+						[Documentation]		Select the Form
+											Wait Until Page Contains Element		${lnk_form_loc1}${formname}${lnk_form_loc2}				${timeout}
+											Click Link								${lnk_form_loc1}${formname}${lnk_form_loc2}	
+											
+Form Set Value Choice	[Arguments]			${queslabel}		${setvalue}			
+						[Documentation] 	Pick a choice from a radio button(Setting ${setvalue} as Global variable in order to reuse in other keywords)
+											Wait Until Page Contains Element		${Form_que_name}${queslabel}${Form_value_set1}${setvalue}${Form_value_set2}						${timeout}
+											Click Button							${Form_que_name}${queslabel}${Form_value_set1}${setvalue}${Form_value_set2}	
+											Set Global Variable	${valueset}	${setvalue}
+											
+Form Set Value Text 	[Arguments]			${queslabel}		${inputtext}	
+						[Documentation]		Enter the input values
+											Wait Until Page Contains Element		${Form_Input_Value1}${queslabel}${Form_Input_Value2}											${timeout}	
+											Input Text								${Form_Input_Value1}${queslabel}${Form_Input_Value2}		${inputtext}
+ 						
+Form Set Value Checkbox	[Arguments]			${queslabel}		${chkboxvalue}	
+						[Documentation]		Set/Unset the checkbox
+											Wait Until Page Contains Element		${Form_que_name}${queslabel}${Form_value_set1}${chkboxvalue}${Form_value_set2}						${timeout}
+											Click Button							${Form_que_name}${queslabel}${Form_value_set1}${chkboxvalue}${Form_value_set2}
+				
+Validate Error Message	[Arguments]		
+						[Documentation]		Validate the Error Message
+											Sleep			${5s_sleep}
+											${status}=		App Verify Alert Present
+											Run Keyword If		'${status}'=='True'		Confirm Action
+											Wait Until Page Contains Element	${Form_error_handle}			${timeout}
+											Page Should Contain Element			${Form_error_handle}
+											Log	${Form_error_handle}
+											
+Select Case from List	[Arguments]			${columnname}			${filtername}						
+						[Documentation]		To Select the filtered Case from list
+											Wait Until Page Contains Element		${tbl_forms_caselist_columnname}${columnname}${tbl_forms_caselist_filtername}${filtername}${tbl_forms_caselist_filternameend}								${timeout}
+											Click Element							${tbl_forms_caselist_columnname}${columnname}${tbl_forms_caselist_filtername}${filtername}${tbl_forms_caselist_filternameend}
+											
+Validate Case Information	[Arguments]		${casePropertiesName}			${expectedCasePropertiesValue}
+							[Documentation]	To Validate Case details
+											Wait Until Page Contains Element		${propertiesName}${casePropertiesName}${propertiesValue1}${expectedCasePropertiesValue}${propertiesValue2}					${timeout}
+											Page Should Contain Element				${propertiesName}${casePropertiesName}${propertiesValue1}${expectedCasePropertiesValue}${propertiesValue2}
+
+Open Case Form			[Arguments]								
+						[Documentation]		Open the Particular Case
+											Wait Until Page Contains Element 		${lnk_selectcases_submit} 		${timeout}
+											Click Element							${lnk_selectcases_submit}
+
+Validate Expected Message	[Arguments]		${expmessage}					
+							[Documentation]	Verify Expected Form message
+											Wait Until Page Contains 				${expmessage}					${timeout}
+											Page Should Contain 					${expmessage}
+											Sleep									${2s_sleep}
+																						
+Submit Form				[Arguments]
+						[Documentation]		To Submit the form
+											Sleep									${2s_sleep}
+											Wait Until Page Contains Element		${btn_submit}							${timeout}
+											Click Element							${btn_submit}
+											${status}=			App Verify Alert Present
+											Run Keyword Unless						'${status}'=='True'			Sleep		${5s_sleep}	
+											Run Keyword And Ignore Error			Run Keyword Unless		'${status}'=='True'			Click Element							${btn_submit}
+	
+
+Validate Expected Question Label	[Arguments]		${rad_select}	${valueset}		${expqueslabel}					
+						[Documentation]		Verify Expected questions based on selection of radio buttons(${valueset} value passed from	Keyword - Form Set Value Choice)
+											Sleep									${2s_sleep}
+											Wait Until Page Contains Element		${btn_submit}			${timeout}
+											Run Keyword If			'${rad_select}'=='${valueset}'		Element Should Be Visible				${val_exp_label}${expqueslabel}${val_exp_labe2}			
+											Run Keyword Unless		'${rad_select}'=='${valueset}'		Element Should Not Be Visible			${val_exp_label}${expqueslabel}${val_exp_labe2}			
+
+Filter Condition		[Arguments]			${filtername}
+						[Documentation]		To Filter the case from list
+											Wait Until Page Contains  				Filter cases:							${timeout}
+											Input Text								${txt_filter}							${filtername}							
+  								
+Select Report			[Arguments]			${Reportname}
+						[Documentation]		To Select the report
+											Wait Until Page Contains Element		${lnk_Reports_name1}${Reportname}${lnk_Reports_name2}				${timeout}
+											Click Element							${lnk_Reports_name1}${Reportname}${lnk_Reports_name2}			
+
+Report Filters 			[Arguments]			${workername}
+						[Documentation]		To Select the filter values
+											Wait Until Page Contains Element 		${btn_MobileWorkers}			${timeout}
+											Click Button							${btn_MobileWorkers}
+											Click Element							${Ink_UserType}		
+											Click Element							${lnk_Select1}${workername}${lnk_Select2}
+											Click Button							${btn_Apply}	
+
+Validate Report			[Arguments]			${value}		${Titlename}	
+						[Documentation]		To Validate the report
+											Wait Until Page Contains Element 		${lnk_viewform_validate1}${value}${lnk_viewform_validate2}							${timeout}
+											Click Link								${lnk_viewform_validate1}${value}${lnk_viewform_validate2}
+											Wait Until Page Contains Element    	${reportname1}${Titlename}${reportname2}							${timeout}
+											Page Should Contain Element				${reportname1}${Titlename}${reportname2}
+
+Log out of Cloudcare	[Arguments]
+						[Documentation]		Log out of CommCareHQ application
+											Wait Until Page Contains Element		${lnk_home_username}		${timeout}
+											Click Link								${lnk_home_username}
+											Click Link								${lnk_home_logout}
+											Wait Until Page Contains Element     	${lnk_home_signin}			${timeout}
+									
+									
+								
+										
+
+
+										
+										
+										
+										
+
+	
+										
+										
+										
+
+										
+										

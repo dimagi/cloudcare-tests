@@ -1,0 +1,114 @@
+*** Variables ***
+
+#Variable Name#					#Question Name#
+
+#First Form#
+${FF_ques1}						Enter your name
+
+#New Case#
+${NC_ques1}						Enter your name
+
+#Update Case#
+${UPC_ques1}					Select an eye colour
+
+#Close Case#
+${CLC_ques1}					Reason for Closing
+
+#Datatypes#
+${DT_ques1}						This question should let you enter any form of text or special characters.
+${DT_ques2}						This question should only let you enter an Integer
+${DT_ques3}						This question should only let you enter a decimal number
+${DT_ques4}						This question should allow you to enter a date
+${DT_ans_date}					01/03/2012
+${DT_ques5}						This question should allow you to enter only a time
+${DT_ques6}						The value of this question should be hidden, but anything can be entered
+${DT_ques7}						The value of this question should be hidden, only numbers are allowed
+${DT_ques8}						You should be able to enter digits here. Enter multiple zeroes and navigate back and forth to make sure they remain
+${DT_ques_radiobtn}				You should be able to choose one of the following options
+${DT_ques_chkbox}				You should be able to choose any of the following
+
+#Groups#
+${GR_ques1}						If multiple questions per screen are supported, two will be displayed here
+${GR_answ_radio1}				Selection	
+${GR_ques2}						Otherwise, this question is on its own screen
+${GR_skip_ques3}				Do you want to skip the first group?
+${GR_ans_radio1}				Yes
+${GR_ans_radio2}				No
+${GR_ques4}						This question is in the first group.${SPACE*2}It should not be shown if 'Yes' was just answered.${SPACE*2}Do you want to skip the next label?
+${GR_ques5}						Which parts of the group do you want to skip?
+${GR_ques6}						This label will only be shown if you answered
+${GR_answer_radio1}				None
+${GR_answer_radio2}				Inner
+${GR_answer_radio3}				Outer
+${GR_outergroup1}				This label belongs to the outer group
+${GR_innergroup1}				This item belongs to the inner group
+${GR_label1}					This label is in a group with no name.${SPACE*2}The group name should not be displayed.
+${GR_label2}					That's it
+
+#Constraints#
+${CN_ques1}						This question can be anything but WRONG
+${CN_ques2}						If answered, this question cannot be less than 3 characters, or greater than 6 characters long. Leaving the field blank should be valid.
+${CN_ques3}						This question is required. Try to navigate to the next question and ensure that you are notified that it must be answered.
+
+#Case Create#
+${CC_ques1}						What is the case name? (This question should not be allowed to be empty)
+${CC_radio_ques2}				Please confirm you want to create this case by selecting
+${CC_radio_ans1}				Confirm - Create Case
+${CC_radio_ans2}				Cancel - Do Not
+
+#Case Update#
+${CUP_ques1}					Text Stored
+${CUP_ques2}					Single Select Stored Data
+${CUP_ques3}					Multi Select Stored Data
+${CUP_ques4}					Stored Integer value
+${CUP_ques5}					Stored Date Value
+
+#Case Close#
+${CCL_ques1}					Please confirm you want to close the case by choosing
+${CCL_radio_ans1}				Confirm - Please close this case
+${CCL_radio_ans2}				Cancel - Please leave this case open
+
+#Create sub case#
+${CSUBC_ques1}					Name of Sub Case
+${CSUBC_ques2}					Number for Sub Case
+${CSUBC_ques3}					Do you want to create the sub case?
+${CSC_radio_ans1}				1. Confirm
+${CSC_radio_ans2}				2. Cancel
+
+#Create multiple sub cases#
+${CMSC_ques1}					Name of Sub Case 1
+${CMSC_ques2}					Number for Sub Case 1
+${CMSC_ques3}					Name of Sub Case 2
+${CMSC_ques4}					Date for Sub Case 2
+
+#Close Case#
+${CC_Ques}						Do you want to close the case?
+
+#Sub case one&two#
+${CC_Ques}						Do you want to close the case?
+
+#References#
+${radio_ques1}					Show questions b and c?
+${radio_ans1_yes}				Question B
+${radio_ans2_yes}				Question C
+${radio_ques2}					Show questions e and f?
+${radio_ques2_ans1}				Question E
+${radio_ques2_ans2}				Question F
+
+#Invalid Email and PWD#
+${inval_mail_id}				indium1@coropp.org
+${inval_mail_pwd}				1235
+
+#Validate Exp Message#
+${val_exp_message1}				Form successfully saved.	
+${val_exp_message2}				No matching records found
+${val_exp_message3}				Enter a valid e-mail address.
+${val_exp_message4}				Please enter a correct username and password. Note that both fields are case-sensitive.
+${val_exp_message5}				No data available in table
+
+#Radio Choice#
+${val_set}						Yes
+${val_set2}						No
+${val_set3}						None
+${val_set4}						Outer
+${val_set5}						Inner
