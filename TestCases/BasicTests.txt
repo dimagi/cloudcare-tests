@@ -1,10 +1,10 @@
 *** Settings ***
 Library 		Selenium2Library
 Library 		Collections
-Resource		..//Common//Common_Variables.txt
-Resource		..//Common//Keywords_lib.txt
-Resource		..//Common//Objects_Respository.txt
-Resource		..//Common//Test_Data.txt
+Resource		../Common/Common_Variables.txt
+Resource		../Common/Keywords_lib.txt
+Resource		../Common/Objects_Respository.txt
+Resource		../Common/Test_Data.txt
 
 *** Test Cases*** 
 
@@ -18,19 +18,19 @@ Launch Application
 
 Basic Tests -> First Form		
 							[Documentation]		To Verify user able to create First Form and validate in Submit History Report.
-							[Tags]	Regression	
+							[Tags]	Regression
 														Open Cloudcare					${username1}			${password1}
 														Select Application				Basic Test
 														Select Module			   		Basic Test
 														Select Form						First Form
-														Form Set Value Text				${FF_ques1}				Timechkfinal11
+														Form Set Value Text				${FF_ques1}				New First Form
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
 														Select Report					Submit History
-														Report Filters					indium1
-														Validate Report					First Form				Timechkfinal11		
+														Report Filters					${Val_mobile_worker1}
+														Validate Report					First Form				New First Form		
 														Log out of Cloudcare													
 Basic Tests -> New Case		
 							[Documentation]		To Verify user able to create New Case and validate in Submit History Report.
@@ -40,14 +40,15 @@ Basic Tests -> New Case
 														Select Module			    	Basic Test
 														Select Form						New Case
 														Submit Form
-														Validate Error Message
-														Form Set Value Text				Enter your name			TestNewCase123
+														Validate Required Error
+														Validate Validation Error		${NC_ques1}				${val_NC_errmessage}	
+														Form Set Value Text				${NC_ques1}				TestNewCase123
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
 														Select Report					Submit History
-														Report Filters					indium1
+														Report Filters					${Val_mobile_worker1}
 														Validate Report					New Case				TestNewCase123		
 														Log out of Cloudcare	
 Basic Tests -> Update Case		
@@ -69,7 +70,7 @@ Basic Tests -> Update Case
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
 														Select Report					Submit History
-														Report Filters					indium1
+														Report Filters					${Val_mobile_worker1}
 														Validate Report					Update Case				blue
 														Log out of Cloudcare			
 Basic Tests -> Close Case		
@@ -86,11 +87,12 @@ Basic Tests -> Close Case
 														Submit Form
 														Validate Expected Message		${val_exp_message1}	
 														Select Form						Update Case
+														Filter Condition   				TestNewCase123
 														Validate Expected Message		${val_exp_message5}
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
 														Select Report					Submit History
-														Report Filters					indium1
+														Report Filters					${Val_mobile_worker1}
 														Validate Report					Close Case				Close
 														Log out of Cloudcare
 																												
@@ -106,5 +108,9 @@ Basic Tests -> CloudCare Navigation
 														Select Application				Basic Test
 														Select Module			    	Basic Test
 														Log out of Cloudcare
-														Close Browser
+														
+														
+														
+
+														
 																					

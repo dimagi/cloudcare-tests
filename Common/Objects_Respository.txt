@@ -67,10 +67,12 @@ ${propertiesName}						//tr/th[text()='
 ${propertiesValue1}						']/parent::tr//td[text()='
 ${propertiesValue2}						']
 
-${Form_error_handle}					//div[@id='error']
+${Form_error_handle1}					//span[contains(text(),'
+${Form_error_handle2}					')]//following-sibling::div[@id='error' and contains(text(),'
+${Form_error_handle3}					')]
+
 ${val_exp_label}						//span[contains(text(),"
 ${val_exp_labe2}						")]
-
 
 #Select Reports#
 ${lnk_Reports_name1}					//ul[@id='report-list']/li[11]/a[contains(text(),'

@@ -1,9 +1,9 @@
 *** Settings ***
 Library 		Selenium2Library
 Library			application_utilities.py
-Resource		..//Common//Common_Variables.txt
-Resource		..//Common//Objects_Respository.txt
-Resource		..//Common//Test_Data.txt
+Resource		../Common/Common_Variables.txt
+Resource		../Common/Objects_Respository.txt
+Resource		../Common/Test_Data.txt
 
 *** Keywords ***
 
@@ -42,25 +42,29 @@ Form Set Value Choice	[Arguments]			${queslabel}		${setvalue}
 											Click Button							${Form_que_name}${queslabel}${Form_value_set1}${setvalue}${Form_value_set2}	
 											Set Global Variable	${valueset}	${setvalue}
 											
-Form Set Value Text 	[Arguments]			${queslabel}		${inputtext}	
+Form Set Value Text 	[Arguments]			${queslabel1}		${inputtext}	
 						[Documentation]		Enter the input values
-											Wait Until Page Contains Element		${Form_Input_Value1}${queslabel}${Form_Input_Value2}											${timeout}	
-											Input Text								${Form_Input_Value1}${queslabel}${Form_Input_Value2}		${inputtext}
- 						
-Form Set Value Checkbox	[Arguments]			${queslabel}		${chkboxvalue}	
+											Wait Until Page Contains Element		${Form_Input_Value1}${queslabel1}${Form_Input_Value2}											${timeout}	
+											Input Text								${Form_Input_Value1}${queslabel1}${Form_Input_Value2}		${inputtext}
+											
+											
+Form Set Value Checkbox	[Arguments]			${queslabel2}		${chkboxvalue}	
 						[Documentation]		Set/Unset the checkbox
-											Wait Until Page Contains Element		${Form_que_name}${queslabel}${Form_value_set1}${chkboxvalue}${Form_value_set2}						${timeout}
-											Click Button							${Form_que_name}${queslabel}${Form_value_set1}${chkboxvalue}${Form_value_set2}
+											Wait Until Page Contains Element		${Form_que_name}${queslabel2}${Form_value_set1}${chkboxvalue}${Form_value_set2}					${timeout}
+											Click Button							${Form_que_name}${queslabel2}${Form_value_set1}${chkboxvalue}${Form_value_set2}
 				
-Validate Error Message	[Arguments]		
-						[Documentation]		Validate the Error Message
+
+Validate Validation Error	[Arguments]		${queslabel2}		${errormessage}		
+							[Documentation]	Validate Whether the validation message appears(if an invalid value is set). 
+											Wait Until Page Contains Element	${Form_error_handle1}${queslabel2}${Form_error_handle2}${errormessage}${Form_error_handle3}			${timeout}
+											Page Should Contain Element			${Form_error_handle1}${queslabel2}${Form_error_handle2}${errormessage}${Form_error_handle3}
+					
+Validate Required Error		[Arguments]		
+							[Documentation]	Validate the required Error on submitting a form if no value is filled in for a required question. 
 											Sleep			${5s_sleep}
 											${status}=		App Verify Alert Present
 											Run Keyword If		'${status}'=='True'		Confirm Action
-											Wait Until Page Contains Element	${Form_error_handle}			${timeout}
-											Page Should Contain Element			${Form_error_handle}
-											Log	${Form_error_handle}
-											
+	
 Select Case from List	[Arguments]			${columnname}			${filtername}						
 						[Documentation]		To Select the filtered Case from list
 											Wait Until Page Contains Element		${tbl_forms_caselist_columnname}${columnname}${tbl_forms_caselist_filtername}${filtername}${tbl_forms_caselist_filternameend}								${timeout}
@@ -80,7 +84,7 @@ Validate Expected Message	[Arguments]		${expmessage}
 							[Documentation]	Verify Expected Form message
 											Wait Until Page Contains 				${expmessage}					${timeout}
 											Page Should Contain 					${expmessage}
-											Sleep									${2s_sleep}
+											Sleep									${7s_sleep}
 																						
 Submit Form				[Arguments]
 						[Documentation]		To Submit the form

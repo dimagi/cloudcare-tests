@@ -1,10 +1,10 @@
 *** Settings ***
 Library 		Selenium2Library
 Library 		Collections
-Resource		..//Common//Common_Variables.txt
-Resource		..//Common//Keywords_lib.txt
-Resource		..//Common//Objects_Respository.txt
-Resource		..//Common//Test_Data.txt
+Resource		../Common/Common_Variables.txt
+Resource		../Common/Keywords_lib.txt
+Resource		../Common/Objects_Respository.txt
+Resource		../Common/Test_Data.txt
 
 *** Test Cases*** 
 
@@ -18,28 +18,36 @@ Launch Application
 														
 Coverage -> Datatypes-> Basic Forms 1
 							[Documentation]	To verify user is able to enter values and save the Datatypes form. 
-							[Tags]	Regression	
+							[Tags]	Regression
 														Open Cloudcare				${username1}				${password1}
 														Select Application			Coverage
 														Select Module				Basic Form Tests
 														Select Form					Datatypes
 														Form Set Value Text			${DT_ques1}					good
-														Form Set Value Text			${DT_ques2}					better
-														Submit Form
-														Validate Error Message
-														Form Set Value Text			${DT_ques2}					123
-														Form Set Value Text			${DT_ques3}					786
+														Form Set Value Text			${DT_ques2}					abc
+														Form Set Value Text			${DT_ques3}					ddd
 														Form Set Value Text			${DT_ques4}					01/08/2012
-														Form Set Value Text			${DT_ques5}					21:15
+														Form Set Value Text			${DT_ques5}					ccc
 														Form Set Value Text			${DT_ques6}					life
-														Form Set Value Text			${DT_ques7}					786
+														Form Set Value Text			${DT_ques7}					fff
 														Form Set Value Text			${DT_ques8}					000
 														Form Set Value Choice		${DT_ques_radiobtn}			One
 														Form Set Value Checkbox		${DT_ques_chkbox}			Two	
 														Submit Form
+														Validate Required Error
+														Validate Validation Error	${DT_ques2}					${val_DT_err_message1}
+														Form Set Value Text			${DT_ques2}					123
+														Validate Validation Error	${DT_ques3}					${val_DT_err_message2}
+														Form Set Value Text			${DT_ques3}					456
+														Validate Validation Error	${DT_ques5}					${val_DT_err_message3}
+														Form Set Value Text			${DT_ques5}					21:15
+														Validate Validation Error	${DT_ques7}					${val_DT_err_message1}
+														Form Set Value Text			${DT_ques7}					789
+														Submit Form
 														Validate Expected Message	${val_exp_message1}
 														Log out of Cloudcare
-																										
+														
+																
 Coverage -> Groups-> Basic Forms 2
 							[Documentation]	To verify user is able to enter values and save the Groups form. 
 							[Tags]	Regression														
@@ -62,26 +70,26 @@ Coverage -> Groups-> Basic Forms 2
 														Log out of Cloudcare
 Coverage -> Constraints-> Basic Forms 3
 							[Documentation]	To verify user is able to enter values and save the Constraints form. 
-							[Tags]	Regression						
+							[Tags]	Regression					
 														Open Cloudcare				${username1}				${password1}	
 														Select Application			Coverage
 														Select Module				Basic Form Tests
 														Select Form					Constraints
 														Form Set Value Text			${CN_ques1}					Wrong
-														Submit Form
-														Validate Error Message
 														Form Set Value Text			${CN_ques2}					45
 														Submit Form
-														Validate Error Message
+														Validate Required Error
+														Validate Validation Error	${CN_ques2}					${val_CN_err_message1}
 														Form Set Value Text			${CN_ques2}					7898909
-														Submit Form
-														Validate Error Message
-														Form Set Value Text			${CN_ques2}					145
+														Validate Validation Error	${CN_ques3}					${val_CN_err_message2}
 														Form Set Value Text			${CN_ques3}					queen
+														Validate Validation Error	${CN_ques2}					${val_CN_err_message1}
+														Form Set Value Text			${CN_ques2}					123	
 														Submit Form
 														Validate Expected Message	${val_exp_message1}	
-														Log out of Cloudcare		
-Coverage -> Constraints-> Basic Forms 5													
+														Log out of Cloudcare
+														
+Coverage -> Edge Cases> Basic Forms 5													
 							[Documentation]	To verify user is able to enter values and save the References form. 
 							[Tags]	Regression
 														Open Cloudcare						${username1}			${password1}

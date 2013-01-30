@@ -112,3 +112,28 @@ ${val_set2}						No
 ${val_set3}						None
 ${val_set4}						Outer
 ${val_set5}						Inner
+
+#Report Filter Data#
+${Val_mobile_worker1}			indium1
+${Val_mobile_worker2}			indium2
+
+#Validate Exp Error Message#
+
+#New Case#
+${val_NC_errmessage}			An answer is required
+
+#CaseCreate&Close#
+${val_CC_err_message}			An answer is required
+
+#CaseUpdate#
+${val_CU_err_message1}			Not a valid whole number
+${val_CU_err_message2}			An answer is required
+
+#Datatypes#
+${val_DT_err_message1}			Not a valid whole number
+${val_DT_err_message2}			Not a valid number
+${val_DT_err_message3}			Not a valid time
+
+#Constraints#
+${val_CN_err_message1}			This answer is outside the allowed range.
+${val_CN_err_message2}			An answer is required
