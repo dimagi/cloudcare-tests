@@ -2,3 +2,5 @@ chromedriver.log
 *.png
 *.html
 *.xml
+
+Common/Login_Test_Data.txt

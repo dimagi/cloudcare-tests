@@ -1,0 +1,64 @@
+*** Variables ***
+
+#Variable Name#					#Question Name#
+
+#Case Create#
+${CC_ques1}						What is the case name? (This question should not be allowed to be empty)
+${CC_radio_ques2}				Please confirm you want to create this case by selecting
+${CC_radio_ans1}				Confirm - Create Case
+${CC_radio_ans2}				Cancel - Do Not
+
+#Case Update#
+${CUP_ques1}					Text Stored
+${CUP_ques2}					Single Select Stored Data
+${CUP_ques3}					Multi Select Stored Data
+${CUP_ques4}					Stored Integer value
+${CUP_ques5}					Stored Date Value
+
+#Case Close#
+${CCL_ques1}					Please confirm you want to close the case by choosing
+${CCL_radio_ans1}				Confirm - Please close this case
+${CCL_radio_ans2}				Cancel - Please leave this case open
+
+#Create sub case#
+${CSUBC_ques1}					Name of Sub Case
+${CSUBC_ques2}					Number for Sub Case
+${CSUBC_ques3}					Do you want to create the sub case?
+${CSC_radio_ans1}				1. Confirm
+${CSC_radio_ans2}				2. Cancel
+
+#Create multiple sub cases#
+${CMSC_ques1}					Name of Sub Case 1
+${CMSC_ques2}					Number for Sub Case 1
+${CMSC_ques3}					Name of Sub Case 2
+${CMSC_ques4}					Date for Sub Case 2
+
+#Close Case#
+${CC_Ques}						Do you want to close the case?
+
+#Sub case one&two#
+${CC_Ques}						Do you want to close the case?
+
+#Validate_CaseCreate&Close__error_message#
+${val_CC_err_message}			An answer is required
+
+#Validate_CaseUpdate__error_message#
+${val_CU_err_message1}			Not a valid whole number
+${val_CU_err_message2}			An answer is required
+
+#Report-Form Name#
+${Case_Form_name1}				Case Create	
+${Case_Form_name2}				Create Sub Case
+
+#Case Name#
+${Casecreate_name}				Indiumcasecreatetest
+${Parent_Case_name}				IndiumParentcasetest
+${Sub_Case_name}				IndiumSubcasetest
+${Multiple_Case_name}			IndiumMultiplecasetest
+${Sub_Case_one_name}			IndiumSubcaseonetest 
+${Sub_Case_two_name}			IndiumSubcasetwotest
+${CaseSharing_Case_name}		Indiumcasesharingtest
+${CaseSharinguser_Case_name}	Indiumcasesharingusertest
+
+
+

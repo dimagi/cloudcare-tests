@@ -1,10 +1,14 @@
 *** Settings ***
 Library 		Selenium2Library
 Library 		Collections
+Library			String
+Library			BuiltIn
 Resource		../Common/Common_Variables.txt
 Resource		../Common/Keywords_lib.txt
 Resource		../Common/Objects_Respository.txt
-Resource		../Common/Test_Data.txt
+Resource		../Common/Cases_Test_data.txt
+Suite Setup		Generate Random Variable str_random
+
 
 *** Test Cases*** 
 
@@ -19,7 +23,7 @@ Launch Application
 Cases -> Don't create a case	
 							[Documentation]	Verify new case is not created using Case Create Form.
 							[Tags]	Regression
-														Open Cloudcare					${username1}			${password1}
+							[Precondition]				Open Cloudcare					${username1}			${password1}
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Create
@@ -27,21 +31,27 @@ Cases -> Don't create a case
 														Validate Required Error
 														Validate Validation Error		${CC_ques1}				${val_CC_err_message}
 														Validate Validation Error		${CC_radio_ques2}		${val_CC_err_message}
-														Form Set Value Text				${CC_ques1}				TestCaseCreate	
+														Form Set Value Text				${CC_ques1}				${Casecreate_name}${str_random}	
 														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans2}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
+														Log out of Cloudcare
+														
+Cases -> Validate Don't create a case	
+							[Documentation]	Verify new case is not created using Case update and Submit History Report.
+							[Tags]	Regression
+							[Precondition]				Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests													
 														Select Form						Case Update
-														Filter Condition   				TestCaseCreate
-														Validate Expected Message		${val_exp_message5}
+														Validate Filter Condition		${Casecreate_name}${str_random}	
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
-														Select Report					Submit History
+														Select Report					${Report_name}
 														Report Filters					${Val_mobile_worker1}
-														Validate Report					Case Create				TestCaseCreate
-														Log out of Cloudcare
+														Validate Report					${Case_Form_name1}		${Casecreate_name}${str_random}
+							[Postcondition]				Log out of Cloudcare
 													
-
 
 Cases -> Create a case	
 							[Documentation]	Verify new case is created using Case Create Form.
@@ -50,12 +60,12 @@ Cases -> Create a case
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Create
-														Form Set Value Text				${CC_ques1}				TestCaseCreate
+														Form Set Value Text				${CC_ques1}				${Casecreate_name}${str_random}
 														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans1}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Select Form						Case Update
-														Select case from list			Name					TestCaseCreate
+														Select case from list			Name					${Casecreate_name}${str_random}
 														Log out of Cloudcare														
 														
 Cases -> Case Update -> Add data to a case	
@@ -65,7 +75,7 @@ Cases -> Case Update -> Add data to a case
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Update
-														Select case from list			Name					TestCaseCreate			
+														Select case from list			Name					${Casecreate_name}${str_random}			
 														Open Case Form
 														Form Set Value Text				${CUP_ques1}			Test
 														Form Set Value Choice			${CUP_ques2}			C
@@ -74,22 +84,27 @@ Cases -> Case Update -> Add data to a case
 														Submit Form
 														Validate Required Error
 														Validate Validation Error		${CUP_ques4}			${val_CU_err_message1}
-														Form Set Value Text				${CUP_ques4}			123
-														Form Set Value Text				${CUP_ques5}			01/10/2013
+														Form Set Value Text				${CUP_ques4}			1
+														Form Set Value Text				${CUP_ques5}			02/08/2013
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Log out of Cloudcare
 														
 Cases -> Case Update -> View previous case data	
 							[Documentation]	To Verify the case data updated using Case Update Form.
-							[Tags]	Regression													
+							[Tags]	Regression												
 														Open Cloudcare					${username1}			${password1}
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Update
-														Select case from list			Name					TestCaseCreate
+														Select case from list			Name					${Casecreate_name}${str_random}
+														Validate Case Information		Name					${Casecreate_name}${str_random}
+														Validate Case Information		Status					open
+														Validate Case Information		Text					Test
+														Validate Case Information		Dateval					2013-02-08
+														Validate Case Information		Intval					1
 														Validate Case Information 		Singleselect			c
-														Validate Case Information		Text					Test	
+														Validate Case Information		Multiselect				c	
 														Log out of Cloudcare
 
 
@@ -100,7 +115,7 @@ Cases -> Don't close a case
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Close
-														Select case from list			Name					TestCaseCreate				
+														Select case from list			Name					${Casecreate_name}${str_random}				
 														Open Case Form
 														Submit Form
 														Validate Required Error
@@ -109,7 +124,7 @@ Cases -> Don't close a case
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Select Form						Case Close
-														Select case from list			Name					TestCaseCreate
+														Select case from list			Name					${Casecreate_name}${str_random}
 														Log out of Cloudcare
 														
 Cases -> Close a case	
@@ -119,15 +134,23 @@ Cases -> Close a case
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Close
-														Select case from list			Name					TestCaseCreate														
+														Select case from list			Name					${Casecreate_name}${str_random}														
 														Open Case Form
 														Form Set Value Choice			${CCL_ques1}			${CCL_radio_ans1}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
+							[Postcondition]				Log out of Cloudcare	
+							
+Cases -> Validate Close a case	
+							[Documentation]		To verify whether case is closed using Case Close Form.
+							[Tags]	Regression
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests												
 														Select Form						Case Close
-														Filter Condition   				TestCaseCreate
-														Validate Expected Message		${val_exp_message5}
-														Log out of Cloudcare
+														Validate Filter Condition   	${Casecreate_name}${str_random}
+							[Postcondition]				Log out of Cloudcare
+							
 														
 Cases -> Sub Case Tests -> Sub Case 1 -> Create Parent Case
 							[Documentation]	To create a new case using Case Create Form.
@@ -136,12 +159,12 @@ Cases -> Sub Case Tests -> Sub Case 1 -> Create Parent Case
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Create	
-														Form Set Value Text				${CC_ques1}				ParentCaseTest
+														Form Set Value Text				${CC_ques1}				${Parent_Case_name}${str_random}
 														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans1}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Select Form						Case Update
-														Select case from list			Name					ParentCaseTest
+														Select case from list			Name					${Parent_Case_name}${str_random}
 														Log out of Cloudcare
 														
 Cases -> Sub Case Tests -> Sub Case 2 -> Sub Case Condition False
@@ -151,49 +174,56 @@ Cases -> Sub Case Tests -> Sub Case 2 -> Sub Case Condition False
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Create Sub Case
-														Select case from list			Name					ParentCaseTest			
+														Select case from list			Name					${Parent_Case_name}${str_random}			
 														Open Case Form
 														Form Set Value Text				${CSUBC_ques2}			abc	
 														Form Set Value Choice			${CSUBC_ques3}			${CSC_radio_ans2}
 														Submit Form
 														Validate Required Error
 														Validate Validation Error		${CSUBC_ques1}			${val_CC_err_message}
-														Form Set Value Text				${CSUBC_ques1}			Subcaseparent
+														Form Set Value Text				${CSUBC_ques1}			${Sub_Case_name}${str_random}
 														Validate Validation Error		${CSUBC_ques2}			${val_CU_err_message1}
 														Form Set Value Text				${CSUBC_ques2}			2
 														Submit Form
-														Validate Expected Message		${val_exp_message1}	
+														Validate Expected Message		${val_exp_message1}
+														Log out of Cloudcare
+														
+Cases -> Sub Case Tests -> Sub Case 2 -> To Validate Sub Case Condition False
+							[Documentation]	Verifying the case is not closed and validate in Submit History Report.
+							[Tags]	Regression														
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
 														Select Module			    	Sub Case One
 														Select Form						Close Case
-														Filter Condition   				ParentCaseTest
-														Validate Expected Message		${val_exp_message5}
+														Validate Filter Condition		${Sub_Case_name}${str_random}
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
-														Select Report					Submit History
+														Select Report					${Report_name}
 														Report Filters					${Val_mobile_worker1}
-														Validate Report					Create Sub Case			cancel
-														Log out of Cloudcare
+														Validate Report					${Case_Form_name2}		cancel
+							[Postcondition]				Log out of Cloudcare
 
 
 Cases -> Sub Case Tests -> Sub Case 3 -> Sub Case Condition True
 							[Documentation]	To create a Sub Case for Parent Case.
-							[Tags]	Regression															
+							[Tags]	Regression														
 														Open Cloudcare					${username1}			${password1}
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Create Sub Case
-														Select case from list			Name					ParentCaseTest			
+														Select case from list			Name					${Parent_Case_name}${str_random}			
 														Open Case Form
-														Form Set Value Text				${CSUBC_ques1}			Subcaseparent
+														Form Set Value Text				${CSUBC_ques1}			${Sub_Case_name}${str_random}
 														Form Set Value Text				${CSUBC_ques2}			2
 														Form Set Value Choice			${CSUBC_ques3}			${CSC_radio_ans1}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Select Module			    	Sub Case One
 														Select Form						Close Case
-														Select case from list			Name					Subcaseparent
-														Validate Case Information 		Parent Case Name		ParentCaseTest
+														Select case from list			Name					${Sub_Case_name}${str_random}
+														Validate Case Information 		Name					${Sub_Case_name}${str_random}
 														Validate Case Information 		Sub Case Number			2
+														Validate Case Information 		Parent Case Name		${Parent_Case_name}${str_random}
 														Log out of Cloudcare
 
 Cases -> Sub Case Tests -> Sub Case 4 -> Close Sub Case
@@ -203,48 +233,61 @@ Cases -> Sub Case Tests -> Sub Case 4 -> Close Sub Case
 														Select Application				Coverage
 														Select Module			    	Sub Case One
 														Select Form						Close Case
-														Select case from list			Name					Subcaseparent			
+														Select case from list			Name					${Sub_Case_name}${str_random}			
 														Open Case Form
 														Form Set Value Choice			${CC_Ques}				1. Yes
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
+														Log out of Cloudcare
+														
+Cases -> Sub Case Tests -> Sub Case 4 -> Validate Close Sub Case
+							[Documentation]		To verify whether sub case is closed and validate the parent case is Open using Case Update form.
+							[Tags]	Regression														
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Sub Case One
 														Select Form						Close Case
-														Filter Condition				Subcaseparent
-														Validate Expected Message		${val_exp_message5}
+														Validate Filter Condition		${Sub_Case_name}${str_random}
 														Select Module			    	Case Tests
 														Select Form						Case Update
-														Select case from list			Name					ParentCaseTest
-														Log out of Cloudcare	
+														Select case from list			Name					${Parent_Case_name}${str_random}
+							[Postcondition]				Log out of Cloudcare	
 									
 Cases -> Sub Case Tests -> Sub Case 5 -> Close Parent Case
 							[Documentation]	To close Parent Case.
-							[Tags]	Regression	
+							[Tags]	Regression
 														Open Cloudcare					${username1}			${password1}
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Create Sub Case
-														Select case from list			Name					ParentCaseTest			
+														Select case from list			Name					${Parent_Case_name}${str_random}			
 														Open Case Form
-														Form Set Value Text				${CSUBC_ques1}			Subcaseparent
+														Form Set Value Text				${CSUBC_ques1}			${Sub_Case_name}${str_random}
 														Form Set Value Text				${CSUBC_ques2}			2
 														Form Set Value Choice			${CSUBC_ques3}			${CSC_radio_ans1}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Select Form						Case Close
-														Select case from list			Name					ParentCaseTest
+														Select case from list			Name					${Parent_Case_name}${str_random}
 														Open Case Form
 														Form Set Value Choice			${CCL_ques1}			${CCL_radio_ans1}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
+														Log out of Cloudcare
+
+Cases -> Sub Case Tests -> Sub Case 5 -> Validate Close Parent Case
+							[Documentation]		To verify whether sub case is open and validate the parent case is closed using Case Update form.
+							[Tags]	Regression														
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Coverage
+														Select Module			    	Case Tests
 														Select Form						Case Update
-														Filter Condition				ParentCaseTest
-														Validate Expected Message		${val_exp_message5}
+														Validate Filter Condition		${Parent_Case_name}${str_random}
 														Select Module			    	Sub Case One
 														Select Form						Close Case
-														Select case from list			Name					Subcaseparent
-														Log out of Cloudcare	
-	
-																											
+														Select case from list			Name					${Sub_Case_name}${str_random}
+							[Postcondition]				Log out of Cloudcare	
+																									
 														
 Cases -> Sub Case Tests -> Sub Case 6 -> Create multiple sub cases
 							[Documentation]	To create Multiple Sub Cases.
@@ -253,36 +296,38 @@ Cases -> Sub Case Tests -> Sub Case 6 -> Create multiple sub cases
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Create	
-														Form Set Value Text				${CC_ques1}				Multiplecasetest
+														Form Set Value Text				${CC_ques1}				${Multiple_Case_name}${str_random}
 														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans1}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 							 							Select Form						Create Multiple Sub Cases
-														Select case from list			Name					Multiplecasetest
+														Select case from list			Name					${Multiple_Case_name}${str_random}
 														Open Case Form
 														Form Set Value Text				${CMSC_ques2}			abc
-														Form Set Value Text				${CMSC_ques4}			01/11/2013
+														Form Set Value Text				${CMSC_ques4}			02/11/2013
 														Submit Form
 														Validate Required Error
 														Validate Validation Error		${CMSC_ques1}			${val_NC_errmessage}
 														Validate Validation Error		${CMSC_ques2}			${val_CU_err_message1}
 														Validate Validation Error		${CMSC_ques3}			${val_NC_errmessage}
-														Form Set Value Text				${CMSC_ques1}			subcase1test
+														Form Set Value Text				${CMSC_ques1}			${Sub_Case_one_name}${str_random}
 														Form Set Value Text				${CMSC_ques2}			123
-														Form Set Value Text				${CMSC_ques3}			subcase2test
+														Form Set Value Text				${CMSC_ques3}			${Sub_Case_two_name}${str_random}
 														Submit Form
-														Validate Expected Message		${val_exp_message1}		
+														Validate Expected Message		${val_exp_message1}
 														Select Module			    	Sub Case One
 														Select Form					    Close Case
-														Select case from list			Name					subcase1test
-														Validate Case Information		Parent Case Name		Multiplecasetest
+														Select case from list			Name					${Sub_Case_one_name}${str_random}
+														Validate Case Information		Name					${Sub_Case_one_name}${str_random}
 														Validate Case Information		Sub Case Number			123
+														Validate Case Information		Parent Case Name		${Multiple_Case_name}${str_random}
 														Select Module			    	Sub Case Two
 														Select Form						Close Case
-														Select case from list			Name					subcase2test
-														Validate Case Information		Parent Case Name		Multiplecasetest
-														Validate Case Information		Sub Case Date			2013-01-11														
-														Log out of Cloudcare
+														Select case from list			Name					${Sub_Case_two_name}${str_random}
+														Validate Case Information		Name					${Sub_Case_two_name}${str_random}
+														Validate Case Information		Sub Case Date			2013-02-11	
+														Validate Case Information		Parent Case Name		${Multiple_Case_name}${str_random}
+							[Postcondition]				Log out of Cloudcare
  										
 														
 Cases -> Case Tests -> Case Sharing 1 -> Create Case as user 1
@@ -292,18 +337,18 @@ Cases -> Case Tests -> Case Sharing 1 -> Create Case as user 1
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Create
-														Form Set Value Text				${CC_ques1}				Case Sharing Test
+														Form Set Value Text				${CC_ques1}				${CaseSharing_Case_name}${str_random}
 														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans1}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Select Form						Case Update
-														Select case from list			Name					Case Sharing Test		
+														Select case from list			Name					${CaseSharing_Case_name}${str_random}		
 														Open Case Form
-														Form Set Value Text				${CUP_ques1}			Test
+														Form Set Value Text				${CUP_ques1}			Test1
 														Form Set Value Choice			${CUP_ques2}			C
 														Form Set Value Checkbox			${CUP_ques3}			C
 														Form Set Value Text				${CUP_ques4}			1
-														Form Set Value Text				${CUP_ques5}			01/10/2013
+														Form Set Value Text				${CUP_ques5}			02/15/2013
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Log out of Cloudcare
@@ -311,31 +356,34 @@ Cases -> Case Tests -> Case Sharing 1 -> Create Case as user 1
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Update
-														Filter Condition   				Case Sharing Test
-														Select case from list			Name					Case Sharing Test
-														Validate Case Information 		Intval					1
-														Validate Case Information 		Singleselect			c														
+														Select case from list			Name					${CaseSharing_Case_name}${str_random}
+														Validate Case Information		Name					${CaseSharing_Case_name}${str_random}
+														Validate Case Information		Status					open
+														Validate Case Information		Text					Test1
+														Validate Case Information		Dateval					2013-02-15
+														Validate Case Information		Intval					1
+														Validate Case Information 		Singleselect			c
+														Validate Case Information		Multiselect				c
 														Log out of Cloudcare
- 													
 
 Cases -> Case Tests -> Case Sharing 2 -> Case changes as user 2
 							[Documentation]	To validate update case and new case with second user.
-							[Tags]	Regression											
+							[Tags]	Regression										
 														Open Cloudcare					${username3}			${password1}
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Update
-														Select case from list			Name					Case Sharing Test
+														Select case from list			Name					${CaseSharing_Case_name}${str_random}
 														Open Case Form
 														Form Set Value Text				${CUP_ques1}			Testing
 														Form Set Value Choice			${CUP_ques2}			A
 														Form Set Value Checkbox			${CUP_ques3}			A
 														Form Set Value Text				${CUP_ques4}			2
-														Form Set Value Text				${CUP_ques5}			01/11/2013
+														Form Set Value Text				${CUP_ques5}			02/16/2013
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Select Form						Case Create
-														Form Set Value Text				${CC_ques1}				Validate second user
+														Form Set Value Text				${CC_ques1}				${CaseSharinguser_Case_name}${str_random}
 														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans1}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
@@ -344,21 +392,25 @@ Cases -> Case Tests -> Case Sharing 2 -> Case changes as user 2
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Update
-														Select case from list			Name					Case Sharing Test	
-														Validate Case Information 		Text					Testing
-														Validate Case Information 		Dateval					2013-01-11
-														Filter Condition				Validate second user
-														Select case from list			Name					Validate second user
+														Select case from list			Name					${CaseSharing_Case_name}${str_random}
+														Validate Case Information		Name					${CaseSharing_Case_name}${str_random}
+														Validate Case Information		Status					open
+														Validate Case Information		Text					Testing
+														Validate Case Information		Dateval					2013-02-16
+														Validate Case Information		Intval					2
+														Validate Case Information 		Singleselect			a
+														Validate Case Information		Multiselect				a c
+														Select case from list			Name					${CaseSharinguser_Case_name}${str_random}
 														Log out of Cloudcare
 	
 Cases -> Case Tests -> Case Sharing 3 -> Close shared case
 							[Documentation]	To close a case in first user and validate with second user.
-							[Tags]	Regression	
-														Open Cloudcare					${username3}			${password1}
+							[Tags]	Regression
+														Open Cloudcare					${username1}			${password1}
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Close
-														Select case from list			Name					Validate second user
+														Select case from list			Name					${CaseSharinguser_Case_name}${str_random}
 														Open Case Form
 														Form Set Value Choice			${CCL_ques1}			${CCL_radio_ans1}
 														Submit Form
@@ -368,14 +420,10 @@ Cases -> Case Tests -> Case Sharing 3 -> Close shared case
 														Select Application				Coverage
 														Select Module			    	Case Tests
 														Select Form						Case Update
-														Filter Condition				Validate second user
-														Validate Expected Message		${val_exp_message2}
+														Validate Filter Condition		${CaseSharinguser_Case_name}${str_random}
 														Log out of Cloudcare
+														Close Browser
 
-
-
-
-														
 														
 												
 																					

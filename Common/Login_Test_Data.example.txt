@@ -1,0 +1,11 @@
+*** Variables ***
+
+#Variable Name#					#Question Name#
+
+#Invalid Email and PWD#
+${inval_mail_id}				username
+${inval_mail_pwd}				password
+
+#Validate_Message#
+${val_log_exp_message1}				Enter a valid e-mail address.
+${val_log_exp_message2}				Please enter a correct username and password. Note that both fields are case-sensitive.

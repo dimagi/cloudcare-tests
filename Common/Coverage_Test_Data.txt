@@ -1,0 +1,63 @@
+*** Variables ***
+
+#Variable Name#					#Question Name#
+
+#Datatypes#
+${DT_ques1}						This question should let you enter any form of text or special characters.
+${DT_ques2}						This question should only let you enter an Integer
+${DT_ques3}						This question should only let you enter a decimal number
+${DT_ques4}						This question should allow you to enter a date
+${DT_ans_date}					01/03/2012
+${DT_ques5}						This question should allow you to enter only a time
+${DT_ques6}						The value of this question should be hidden, but anything can be entered
+${DT_ques7}						The value of this question should be hidden, only numbers are allowed
+${DT_ques8}						You should be able to enter digits here. Enter multiple zeroes and navigate back and forth to make sure they remain
+${DT_ques_radiobtn}				You should be able to choose one of the following options
+${DT_ques_chkbox}				You should be able to choose any of the following
+
+#Groups#
+${GR_ques1}						If multiple questions per screen are supported, two will be displayed here
+${GR_answ_radio1}				Selection	
+${GR_ques2}						Otherwise, this question is on its own screen
+${GR_skip_ques3}				Do you want to skip the first group?
+${GR_ans_radio1}				Yes
+${GR_ans_radio2}				No
+${GR_ques4}						This question is in the first group.${SPACE*2}It should not be shown if 'Yes' was just answered.${SPACE*2}Do you want to skip the next label?
+${GR_ques5}						Which parts of the group do you want to skip?
+${GR_ques6}						This label will only be shown if you answered
+${GR_answer_radio1}				None
+${GR_answer_radio2}				Inner
+${GR_answer_radio3}				Outer
+${GR_outergroup1}				This label belongs to the outer group
+${GR_innergroup1}				This item belongs to the inner group
+${GR_label1}					This label is in a group with no name.${SPACE*2}The group name should not be displayed.
+${GR_label2}					That's it
+
+#Constraints#
+${CN_ques1}						This question can be anything but WRONG
+${CN_ques2}						If answered, this question cannot be less than 3 characters, or greater than 6 characters long. Leaving the field blank should be valid.
+${CN_ques3}						This question is required. Try to navigate to the next question and ensure that you are notified that it must be answered.
+
+#References#
+${radio_ques1}					Show questions b and c?
+${radio_ans1_yes}				Question B
+${radio_ans2_yes}				Question C
+${radio_ques2}					Show questions e and f?
+${radio_ques2_ans1}				Question E
+${radio_ques2_ans2}				Question F
+
+#Radio Choice#
+${val_set}						Yes
+${val_set2}						No
+${val_set3}						None
+${val_set4}						Outer
+${val_set5}						Inner
+
+#Validate_Datatypes_error_message#
+${val_DT_err_message1}			Not a valid whole number
+${val_DT_err_message2}			Not a valid number
+${val_DT_err_message3}			Not a valid time
+
+#Validate_Constraints__error_message#
+${val_CN_err_message1}			This answer is outside the allowed range.
+${val_CN_err_message2}			An answer is required

@@ -1,10 +1,12 @@
 *** Settings ***
 Library 		Selenium2Library
 Library 		Collections
+Library			String
+Library			BuiltIn
 Resource		../Common/Common_Variables.txt
 Resource		../Common/Keywords_lib.txt
 Resource		../Common/Objects_Respository.txt
-Resource		../Common/Test_Data.txt
+Resource		../Common/Login_Test_Data.txt
 
 *** Test Cases*** 
 
@@ -19,11 +21,12 @@ Login TC
 							[Documentation]		To Validate Valid and Invalid login credentials.
 							[Tags]	Regression
 														Open Cloudcare					${inval_mail_id}		${inval_mail_pwd}
-														Validate Expected Message		${val_exp_message4}
+														Validate Expected Message		${val_log_exp_message2}
 														Open Cloudcare					${inval_mail_id}		${password1}
-														Validate Expected Message		${val_exp_message4}				
+														Validate Expected Message		${val_log_exp_message2}				
 														Open Cloudcare					${username1}			${inval_mail_pwd}
-														Validate Expected Message		${val_exp_message4}	
+														Validate Expected Message		${val_log_exp_message2}	
 														Open Cloudcare					${username1}			${password1}
 														Log out of Cloudcare
-														Close Browser		
+														Close Browser
+																

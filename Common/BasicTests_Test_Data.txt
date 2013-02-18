@@ -1,0 +1,28 @@
+*** Variables ***
+
+#Variable Name#					#Question Name#
+
+#First Form#
+${FF_ques1}						Enter your name
+
+#New Case#
+${NC_ques1}						Enter your name
+
+#Update Case#
+${UPC_ques1}					Select an eye colour
+
+#Close Case#
+${CLC_ques1}					Reason for Closing
+
+#Validate_New Case#
+${val_NC_errmessage}			An answer is required
+
+#Report-Form Name#
+${Form_name1}               	First Form
+${Form_name2}                	New Case
+${Form_name3}                	Update Case
+${Form_name4}                 	Close Case
+
+#Case Name#
+${Firstform_name}				Indiumfirstformtest
+${Case_name}				    IndiumNewcasetest

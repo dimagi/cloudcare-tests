@@ -1,13 +1,15 @@
 *** Settings ***
 Library 		Selenium2Library
 Library 		Collections
+Library			String
+Library			BuiltIn
 Resource		../Common/Common_Variables.txt
 Resource		../Common/Keywords_lib.txt
 Resource		../Common/Objects_Respository.txt
-Resource		../Common/Test_Data.txt
+Resource		../Common/BasicTests_Test_Data.txt
+Suite Setup		Generate Random Variable str_random
 
 *** Test Cases*** 
-
 
 #Testcase Name											#keyword						#Argument1				#Argument2			#Argument3
 
@@ -15,25 +17,26 @@ Launch Application
 							[Documentation]	To Launch CommCare application.
 							[Tags]	Smoke		Regression
 														Launch Browser
-
+																												
 Basic Tests -> First Form		
-							[Documentation]		To Verify user able to create First Form and validate in Submit History Report.
-							[Tags]	Regression
-														Open Cloudcare					${username1}			${password1}
+							[Documentation]		To Verify user able to create First Form(passing Random variable for first form name) and validate in Submit History Report.
+							[Tags]				Regression
+							[Precondition]				Open Cloudcare					${username1}			${password1}
 														Select Application				Basic Test
 														Select Module			   		Basic Test
 														Select Form						First Form
-														Form Set Value Text				${FF_ques1}				New First Form
+														Form Set Value Text				${FF_ques1}				${Firstform_name}${str_random}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
-														Select Report					Submit History
+														Select Report					${Report_name}
 														Report Filters					${Val_mobile_worker1}
-														Validate Report					First Form				New First Form		
-														Log out of Cloudcare													
+														Validate Report					${Form_name1}			${Firstform_name}${str_random}		
+							[Postcondition]				Log out of Cloudcare
+							
 Basic Tests -> New Case		
-							[Documentation]		To Verify user able to create New Case and validate in Submit History Report.
+							[Documentation]		To Verify user able to create New Case(passing Random variable for New Case name) and validate in Submit History Report.
 							[Tags]	Smoke		Regression
 														Open Cloudcare					${username1}			${password1}
 														Select Application				Basic Test
@@ -42,15 +45,16 @@ Basic Tests -> New Case
 														Submit Form
 														Validate Required Error
 														Validate Validation Error		${NC_ques1}				${val_NC_errmessage}	
-														Form Set Value Text				${NC_ques1}				TestNewCase123
+														Form Set Value Text				${NC_ques1}				${Case_name}${str_random}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
-														Select Report					Submit History
+														Select Report					${Report_name}
 														Report Filters					${Val_mobile_worker1}
-														Validate Report					New Case				TestNewCase123		
-														Log out of Cloudcare	
+														Validate Report					${Form_name2}			${Case_name}${str_random}		
+														Log out of Cloudcare
+							
 Basic Tests -> Update Case		
 							[Documentation]		To Verify user able to Update Case and validate in Submit History Report.
 							[Tags]	Smoke		Regression	
@@ -58,48 +62,56 @@ Basic Tests -> Update Case
 														Select Application				Basic Test
 														Select Module			    	Basic Test
 														Select Form						Update Case
-														Select case from list			Name					TestNewCase123			
-														Validate Case Information 		Name					TestNewCase123										
+														Select case from list			Name					${Case_name}${str_random}			
+														Validate Case Information 		Name					${Case_name}${str_random}										
 														Open Case Form				
 														Form Set Value Choice			${UPC_ques1}			Blue
 														Submit Form
 														Validate Expected Message		${val_exp_message1}	
 														Select Form						Update Case
-														Select case from list			Name					TestNewCase123			
-														Validate Case Information 		Name					TestNewCase123		
+														Select case from list			Name					${Case_name}${str_random}			
+														Validate Case Information 		Name					${Case_name}${str_random}	
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
-														Select Report					Submit History
+														Select Report					${Report_name}
 														Report Filters					${Val_mobile_worker1}
-														Validate Report					Update Case				blue
-														Log out of Cloudcare			
+														Validate Report					${Form_name3}			blue
+						[Postcondition]					Log out of Cloudcare
+							
 Basic Tests -> Close Case		
-							[Documentation]		To Verify user able to Close Case and validate in Submit History Report.
+							[Documentation]		To Verify user able to Close Case.
 							[Tags]	Smoke		Regression
 														Open Cloudcare					${username1}			${password1}
 														Select Application				Basic Test
 														Select Module			    	Basic Test
 														Select Form						Close Case
-														Select case from list			Name					TestNewCase123				
-														Validate Case Information 		Name					TestNewCase123											
+														Select case from list			Name					${Case_name}${str_random}				
+														Validate Case Information 		Name					${Case_name}${str_random}
+														Validate Case Information		Eye Colour				blue
 														Open Case Form				
 														Form Set Value Text				${CLC_ques1}			Close
 														Submit Form
-														Validate Expected Message		${val_exp_message1}	
+														Validate Expected Message		${val_exp_message1}
+														Log out of Cloudcare
+														
+Basic Tests -> Validate Close Case		
+							[Documentation]		To verify whether case is closed and validate in Submit History Report.
+							[Tags]	Smoke		Regression
+														Open Cloudcare					${username1}			${password1}
+														Select Application				Basic Test
+														Select Module			    	Basic Test														
 														Select Form						Update Case
-														Filter Condition   				TestNewCase123
-														Validate Expected Message		${val_exp_message5}
+														Validate Filter Condition   	${Case_name}${str_random}
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
-														Select Report					Submit History
+														Select Report					${Report_name}
 														Report Filters					${Val_mobile_worker1}
-														Validate Report					Close Case				Close
-														Log out of Cloudcare
+														Validate Report					${Form_name4}			Close
+							[Postcondition]				Log out of Cloudcare
 																												
-
 Basic Tests -> CloudCare Navigation
 							[Documentation]	To check the screen navigation
-							[Tags]	Regression
+							[Tags]				Regression
 														Open Cloudcare					${username1}			${password1}
 														Select Application				Coverage
 														Select Module			    	Basic Form Tests
@@ -108,9 +120,15 @@ Basic Tests -> CloudCare Navigation
 														Select Application				Basic Test
 														Select Module			    	Basic Test
 														Log out of Cloudcare
-														
-														
-														
+														Close Browser
+												
 
+
+
+														
+	
+	
+
+	
 														
 																					

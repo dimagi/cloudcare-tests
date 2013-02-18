@@ -1,10 +1,18 @@
+*** Settings ***
+Library 		Selenium2Library
+Library 		Collections
+Library			String
+Library			BuiltIn
+Resource		../Common/Common_Variables.txt
+Resource		../Common/Keywords_lib.txt
+
 *** Variables ***
 
 #HomePage#
 
-${lnk_home_signin}	                	//a[contains(text(), 'Sign In')]
-${txt_login_username}               	//*[@id="id_username"]
-${txt_login_password}               	//*[@id="id_password"]
+${lnk_home_signin}	                	//a[text()='Sign In']
+${txt_login_username}               	//input[@id="id_username"]
+${txt_login_password}               	//input[@id="id_password"]
 ${btn_login_signin}			        	//button[@type="submit"]
 
 #Applications#
@@ -25,39 +33,26 @@ ${Form_que_name}						//span[contains(text(),"
 ${Form_value_set1}						")]/preceding-sibling::div//span[text()='
 ${Form_value_set2}						']/preceding-sibling::input
 	
-
 #InputText#
 ${Form_Input_Value1}					//span[text()='
 ${Form_Input_Value2}					']/preceding-sibling::div/input
 
-
 #Update&CloseClose#
 ${lnk_selectcases_submit} 				//*[@id="case-details"]/a
-
 ${btn_submit}				     	 	//section[@id='webforms']//input[@id='submit']
 
-#Validation#
+#Reports_Validation#
 ${btn_MobileWorkers}					//div[@id="user-filter-buttons"]/button[1]
 ${Ink_UserType}							//span[@class='add-on btn dropdown-toggle']
+
 ${lnk_Select1}							//li[@data-value='
 ${lnk_Select2}							']
 
-
 ${btn_Apply}							apply-filters
+
 ${lnk_viewform_validate1}				//td[contains(text(),'
 ${lnk_viewform_validate2}				')]/parent::tr/td/a
-
-${lnk_SubmitHistory_FirstForm}			//table[@id="DataTables_Table_0"]/tbody/tr[1]/td[1]/a
-${lnk_SubmitHistory_NewCase}			//table[@id="DataTables_Table_0"]/tbody/tr[3]/td[1]/a
-${lnk_SubmitHistory_UpdateCase}			//table[@id="DataTables_Table_0"]/tbody/tr[2]/td[1]/a
-${lnk_SubmitHistory_CloseCase}			//table[@id="DataTables_Table_0"]/tbody/tr[1]/td[1]/a
-
-${txt_form_inputname2}			   		//div[3]/div/input
-${txt_form_inputname3}				  	//div[4]/div/input
 ${txt_filter}							//input[@id="dataTables-filter-box"]
-${tbl_forms_caselist}					//table[contains(@id,'DataTables_Table')]/tbody/tr 
-${tbl_forms_labelname}					//table[@class='table table-striped datatable']/tbody/tr
-${tbl_forms_labelvalue}					//table[@class='table table-striped datatable']/tbody/tr
 
 ${tbl_forms_caselist_columnname}		//th[text()='
 ${tbl_forms_caselist_filtername}		']/ancestor::thead/following-sibling::tbody//td[text()='
@@ -71,8 +66,12 @@ ${Form_error_handle1}					//span[contains(text(),'
 ${Form_error_handle2}					')]//following-sibling::div[@id='error' and contains(text(),'
 ${Form_error_handle3}					')]
 
+#Validate Message#
 ${val_exp_label}						//span[contains(text(),"
 ${val_exp_labe2}						")]
+${btn_exp_msg_close}					//section[@id="cloudcare-notifications"]//a					
+${val_exp_msg1}							//div[contains(text(),'
+${val_exp_msg2}							') and not(contains(@style,'display: none'))]
 
 #Select Reports#
 ${lnk_Reports_name1}					//ul[@id='report-list']/li[11]/a[contains(text(),'
@@ -85,6 +84,7 @@ ${report_name2}                          ']
 #LogOut#
 ${lnk_home_username}		       		//a[@class='btn btn-primary dropdown-toggle']
 ${lnk_home_logout}	 		       		Sign Out
+
 
 
 

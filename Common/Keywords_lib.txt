@@ -1,15 +1,21 @@
 *** Settings ***
 Library 		Selenium2Library
+Library 		Collections
+Library			String
+Library			BuiltIn
 Library			application_utilities.py
 Resource		../Common/Common_Variables.txt
 Resource		../Common/Objects_Respository.txt
-Resource		../Common/Test_Data.txt
+Resource		../Common/BasicTests_Test_Data.txt
+Resource		../Common/Cases_Test_data.txt
+Resource		../Common/Coverage_Test_Data.txt
 
 *** Keywords ***
 
 Launch Browser			[Arguments]			
 						[Documentation]		Open the CommCareHQ Application
 											Open Browser					    	${app_url}              ${browser}
+											Maximize Browser Window
 											 	
 
 Open Cloudcare          [Arguments]  		${username}		${password}  	  
@@ -18,7 +24,7 @@ Open Cloudcare          [Arguments]  		${username}		${password}
 											Click Link						 		${lnk_home_signin}		
 											Wait Until Page Contains Element    	${txt_login_username}   ${timeout}
 											Input Text                         		${txt_login_username}   ${username}   
-											Input Password			               	${txt_login_password}   ${password}    
+											Input Password			               	${txt_login_password}   ${password}
 											Click button						 	${btn_login_signin}	
 																					    
 Select Application		[Arguments]			${appname}	
@@ -82,10 +88,10 @@ Open Case Form			[Arguments]
 
 Validate Expected Message	[Arguments]		${expmessage}					
 							[Documentation]	Verify Expected Form message
-											Wait Until Page Contains 				${expmessage}					${timeout}
-											Page Should Contain 					${expmessage}
-											Sleep									${7s_sleep}
-																						
+											Wait Until Page Contains Element 		${val_exp_msg1}${expmessage}${val_exp_msg2}					${timeout}	
+											Page Should Contain Element				${val_exp_msg1}${expmessage}${val_exp_msg2}	 			
+											Sleep									${5s_sleep}
+														
 Submit Form				[Arguments]
 						[Documentation]		To Submit the form
 											Sleep									${2s_sleep}
@@ -94,23 +100,28 @@ Submit Form				[Arguments]
 											${status}=			App Verify Alert Present
 											Run Keyword Unless						'${status}'=='True'			Sleep		${5s_sleep}	
 											Run Keyword And Ignore Error			Run Keyword Unless		'${status}'=='True'			Click Element							${btn_submit}
-	
-
+											
+											
 Validate Expected Question Label	[Arguments]		${rad_select}	${valueset}		${expqueslabel}					
 						[Documentation]		Verify Expected questions based on selection of radio buttons(${valueset} value passed from	Keyword - Form Set Value Choice)
 											Sleep									${2s_sleep}
 											Wait Until Page Contains Element		${btn_submit}			${timeout}
 											Run Keyword If			'${rad_select}'=='${valueset}'		Element Should Be Visible				${val_exp_label}${expqueslabel}${val_exp_labe2}			
 											Run Keyword Unless		'${rad_select}'=='${valueset}'		Element Should Not Be Visible			${val_exp_label}${expqueslabel}${val_exp_labe2}			
-
-Filter Condition		[Arguments]			${filtername}
-						[Documentation]		To Filter the case from list
-											Wait Until Page Contains  				Filter cases:							${timeout}
-											Input Text								${txt_filter}							${filtername}							
-  								
+											
+											
+Validate Filter Condition		[Arguments]			${filtername}		
+						[Documentation]		To validate expected message when no records in table / To validate Filter message when passing invalid input
+											${status} 	${value}=	Run Keyword And Ignore Error 	Wait Until Page Contains			${val_exp_message4}				20					
+											Run Keyword If		'${status.upper()}'=='PASS'			Page Should Contain					${val_exp_message4}
+											Run Keyword If		'${status.upper()}'=='PASS'			Click Element						${btn_exp_msg_close}
+											Run Keyword Unless	'${status.upper()}'=='PASS'			Wait Until Page Contains Element 	${txt_filter}					${timeout}
+											Run Keyword Unless	'${status.upper()}'=='PASS'			Input Text							${txt_filter}					${filtername}
+											Run Keyword Unless	'${status.upper()}'=='PASS'			Page Should Contain				 	${val_exp_message2}				 													
+			
 Select Report			[Arguments]			${Reportname}
 						[Documentation]		To Select the report
-											Wait Until Page Contains Element		${lnk_Reports_name1}${Reportname}${lnk_Reports_name2}				${timeout}
+											Wait Until Page Contains Element		${lnk_Reports_name1}${Reportname}${lnk_Reports_name2}								${timeout}
 											Click Element							${lnk_Reports_name1}${Reportname}${lnk_Reports_name2}			
 
 Report Filters 			[Arguments]			${workername}
@@ -125,23 +136,24 @@ Validate Report			[Arguments]			${value}		${Titlename}
 						[Documentation]		To Validate the report
 											Wait Until Page Contains Element 		${lnk_viewform_validate1}${value}${lnk_viewform_validate2}							${timeout}
 											Click Link								${lnk_viewform_validate1}${value}${lnk_viewform_validate2}
-											Wait Until Page Contains Element    	${reportname1}${Titlename}${reportname2}							${timeout}
+											Wait Until Page Contains Element    	${reportname1}${Titlename}${reportname2}											${timeout}
 											Page Should Contain Element				${reportname1}${Titlename}${reportname2}
 
+Generate Random Variable str_random	[Arguments]
+						[Documentation]		Generate random string to the variables									
+											${str_random} =		Generate Random String		3		[NUMBERS]	
+											Set Global Variable		${str_random}	
+																
 Log out of Cloudcare	[Arguments]
 						[Documentation]		Log out of CommCareHQ application
 											Wait Until Page Contains Element		${lnk_home_username}		${timeout}
 											Click Link								${lnk_home_username}
 											Click Link								${lnk_home_logout}
 											Wait Until Page Contains Element     	${lnk_home_signin}			${timeout}
-									
-									
-								
-										
+											
+			
 
-
-										
-										
+	
 										
 										
 
