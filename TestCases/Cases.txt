@@ -7,7 +7,10 @@ Resource		../Common/Common_Variables.txt
 Resource		../Common/Keywords_lib.txt
 Resource		../Common/Objects_Respository.txt
 Resource		../Common/Cases_Test_data.txt
+Resource		../Common/Cleanup_Cases.txt
 Suite Setup		Generate Random Variable str_random
+# Keyword Will clean up the case created by test if test fails or completed.
+Suite Teardown		Run Keyword And Ignore Error		Run Keywords	Cleanup Case Close		Cleanup Parent Case		Cleanup Multiple Case	Cleanup Casesharing Case	Cleanup Casesharinguser Case	 Cleanup Sub Case One	Cleanup Sub Case One name		Cleanup Sub Case Two
 
 
 *** Test Cases*** 
@@ -17,7 +20,7 @@ Suite Setup		Generate Random Variable str_random
 
 Launch Application				
 							[Documentation]	To Launch CommCare application.
-							[Tags]	Smoke		Regression
+							[Tags]	Smoke		Regression1
 														Launch Browser
 
 Cases -> Don't create a case	
@@ -35,12 +38,13 @@ Cases -> Don't create a case
 														Form Set Value Choice			${CC_radio_ques2}		${CC_radio_ans2}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
-														Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 														
 Cases -> Validate Don't create a case	
 							[Documentation]	Verify new case is not created using Case update and Submit History Report.
 							[Tags]	Regression
-							[Precondition]				Open Cloudcare					${username1}			${password1}
+														Open Cloudcare					${username1}			${password1}
 														Select Application				Coverage
 														Select Module			    	Case Tests													
 														Select Form						Case Update
@@ -48,8 +52,9 @@ Cases -> Validate Don't create a case
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
 														Select Report					${Report_name}
-														Report Filters					${Val_mobile_worker1}
+														Report Filters					${User_Type1}			${Val_mobile_worker1}
 														Validate Report					${Case_Form_name1}		${Casecreate_name}${str_random}
+														# Post Condition performs log out action if any cases are failed and will execute next test case
 							[Postcondition]				Log out of Cloudcare
 													
 
@@ -66,7 +71,8 @@ Cases -> Create a case
 														Validate Expected Message		${val_exp_message1}
 														Select Form						Case Update
 														Select case from list			Name					${Casecreate_name}${str_random}
-														Log out of Cloudcare														
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare														
 														
 Cases -> Case Update -> Add data to a case	
 							[Documentation]	To update a case using Case Update Form.
@@ -80,15 +86,14 @@ Cases -> Case Update -> Add data to a case
 														Form Set Value Text				${CUP_ques1}			Test
 														Form Set Value Choice			${CUP_ques2}			C
 														Form Set Value Checkbox			${CUP_ques3}			C
-														Form Set Value Text				${CUP_ques4}			z	
-														Submit Form
-														Validate Required Error
+														Form Set Value Text				${CUP_ques4}			z
 														Validate Validation Error		${CUP_ques4}			${val_CU_err_message1}
 														Form Set Value Text				${CUP_ques4}			1
 														Form Set Value Text				${CUP_ques5}			02/08/2013
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
-														Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 														
 Cases -> Case Update -> View previous case data	
 							[Documentation]	To Verify the case data updated using Case Update Form.
@@ -104,8 +109,9 @@ Cases -> Case Update -> View previous case data
 														Validate Case Information		Dateval					2013-02-08
 														Validate Case Information		Intval					1
 														Validate Case Information 		Singleselect			c
-														Validate Case Information		Multiselect				c	
-														Log out of Cloudcare
+														Validate Case Information		Multiselect				c
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 
 
 Cases -> Don't close a case	
@@ -125,7 +131,8 @@ Cases -> Don't close a case
 														Validate Expected Message		${val_exp_message1}
 														Select Form						Case Close
 														Select case from list			Name					${Casecreate_name}${str_random}
-														Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 														
 Cases -> Close a case	
 							[Documentation]	To close a case using Case Close Form.
@@ -139,6 +146,7 @@ Cases -> Close a case
 														Form Set Value Choice			${CCL_ques1}			${CCL_radio_ans1}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
+														# Post Condition performs log out action if any cases are failed and will execute next test case
 							[Postcondition]				Log out of Cloudcare	
 							
 Cases -> Validate Close a case	
@@ -165,7 +173,8 @@ Cases -> Sub Case Tests -> Sub Case 1 -> Create Parent Case
 														Validate Expected Message		${val_exp_message1}
 														Select Form						Case Update
 														Select case from list			Name					${Parent_Case_name}${str_random}
-														Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 														
 Cases -> Sub Case Tests -> Sub Case 2 -> Sub Case Condition False
 							[Documentation]	Verifying the case is not created when "2. Cancel" option is selected.
@@ -176,17 +185,18 @@ Cases -> Sub Case Tests -> Sub Case 2 -> Sub Case Condition False
 														Select Form						Create Sub Case
 														Select case from list			Name					${Parent_Case_name}${str_random}			
 														Open Case Form
-														Form Set Value Text				${CSUBC_ques2}			abc	
-														Form Set Value Choice			${CSUBC_ques3}			${CSC_radio_ans2}
+														Form Set Value Text				${CSUBC_ques2}			abc
+														Validate Validation Error		${CSUBC_ques2}			${val_CU_err_message1}
+														Form Set Value Text				${CSUBC_ques2}			2
 														Submit Form
 														Validate Required Error
 														Validate Validation Error		${CSUBC_ques1}			${val_CC_err_message}
 														Form Set Value Text				${CSUBC_ques1}			${Sub_Case_name}${str_random}
-														Validate Validation Error		${CSUBC_ques2}			${val_CU_err_message1}
-														Form Set Value Text				${CSUBC_ques2}			2
+														Form Set Value Choice			${CSUBC_ques3}			${CSC_radio_ans2}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
-														Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 														
 Cases -> Sub Case Tests -> Sub Case 2 -> To Validate Sub Case Condition False
 							[Documentation]	Verifying the case is not closed and validate in Submit History Report.
@@ -199,8 +209,9 @@ Cases -> Sub Case Tests -> Sub Case 2 -> To Validate Sub Case Condition False
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
 														Select Report					${Report_name}
-														Report Filters					${Val_mobile_worker1}
+														Report Filters					${User_Type1}			${Val_mobile_worker1}
 														Validate Report					${Case_Form_name2}		cancel
+														# Post Condition performs log out action if any cases are failed and will execute next test case
 							[Postcondition]				Log out of Cloudcare
 
 
@@ -224,7 +235,8 @@ Cases -> Sub Case Tests -> Sub Case 3 -> Sub Case Condition True
 														Validate Case Information 		Name					${Sub_Case_name}${str_random}
 														Validate Case Information 		Sub Case Number			2
 														Validate Case Information 		Parent Case Name		${Parent_Case_name}${str_random}
-														Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 
 Cases -> Sub Case Tests -> Sub Case 4 -> Close Sub Case
 							[Documentation]	To close Sub Case One.
@@ -238,7 +250,8 @@ Cases -> Sub Case Tests -> Sub Case 4 -> Close Sub Case
 														Form Set Value Choice			${CC_Ques}				1. Yes
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
-														Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 														
 Cases -> Sub Case Tests -> Sub Case 4 -> Validate Close Sub Case
 							[Documentation]		To verify whether sub case is closed and validate the parent case is Open using Case Update form.
@@ -251,6 +264,7 @@ Cases -> Sub Case Tests -> Sub Case 4 -> Validate Close Sub Case
 														Select Module			    	Case Tests
 														Select Form						Case Update
 														Select case from list			Name					${Parent_Case_name}${str_random}
+														# Post Condition performs log out action if any cases are failed and will execute next test case
 							[Postcondition]				Log out of Cloudcare	
 									
 Cases -> Sub Case Tests -> Sub Case 5 -> Close Parent Case
@@ -273,7 +287,8 @@ Cases -> Sub Case Tests -> Sub Case 5 -> Close Parent Case
 														Form Set Value Choice			${CCL_ques1}			${CCL_radio_ans1}
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
-														Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 
 Cases -> Sub Case Tests -> Sub Case 5 -> Validate Close Parent Case
 							[Documentation]		To verify whether sub case is open and validate the parent case is closed using Case Update form.
@@ -286,6 +301,7 @@ Cases -> Sub Case Tests -> Sub Case 5 -> Validate Close Parent Case
 														Select Module			    	Sub Case One
 														Select Form						Close Case
 														Select case from list			Name					${Sub_Case_name}${str_random}
+														# Post Condition performs log out action if any cases are failed and will execute next test case
 							[Postcondition]				Log out of Cloudcare	
 																									
 														
@@ -304,15 +320,15 @@ Cases -> Sub Case Tests -> Sub Case 6 -> Create multiple sub cases
 														Select case from list			Name					${Multiple_Case_name}${str_random}
 														Open Case Form
 														Form Set Value Text				${CMSC_ques2}			abc
-														Form Set Value Text				${CMSC_ques4}			02/11/2013
+														Validate Validation Error		${CMSC_ques2}			${val_CU_err_message1}
+														Form Set Value Text				${CMSC_ques2}			123
 														Submit Form
 														Validate Required Error
 														Validate Validation Error		${CMSC_ques1}			${val_NC_errmessage}
-														Validate Validation Error		${CMSC_ques2}			${val_CU_err_message1}
 														Validate Validation Error		${CMSC_ques3}			${val_NC_errmessage}
 														Form Set Value Text				${CMSC_ques1}			${Sub_Case_one_name}${str_random}
-														Form Set Value Text				${CMSC_ques2}			123
 														Form Set Value Text				${CMSC_ques3}			${Sub_Case_two_name}${str_random}
+														Form Set Value Text				${CMSC_ques4}			02/11/2013
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Select Module			    	Sub Case One
@@ -327,6 +343,7 @@ Cases -> Sub Case Tests -> Sub Case 6 -> Create multiple sub cases
 														Validate Case Information		Name					${Sub_Case_two_name}${str_random}
 														Validate Case Information		Sub Case Date			2013-02-11	
 														Validate Case Information		Parent Case Name		${Multiple_Case_name}${str_random}
+														# Post Condition performs log out action if any cases are failed and will execute next test case
 							[Postcondition]				Log out of Cloudcare
  										
 														
@@ -364,7 +381,8 @@ Cases -> Case Tests -> Case Sharing 1 -> Create Case as user 1
 														Validate Case Information		Intval					1
 														Validate Case Information 		Singleselect			c
 														Validate Case Information		Multiselect				c
-														Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 
 Cases -> Case Tests -> Case Sharing 2 -> Case changes as user 2
 							[Documentation]	To validate update case and new case with second user.
@@ -401,7 +419,8 @@ Cases -> Case Tests -> Case Sharing 2 -> Case changes as user 2
 														Validate Case Information 		Singleselect			a
 														Validate Case Information		Multiselect				a c
 														Select case from list			Name					${CaseSharinguser_Case_name}${str_random}
-														Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 	
 Cases -> Case Tests -> Case Sharing 3 -> Close shared case
 							[Documentation]	To close a case in first user and validate with second user.
@@ -422,7 +441,7 @@ Cases -> Case Tests -> Case Sharing 3 -> Close shared case
 														Select Form						Case Update
 														Validate Filter Condition		${CaseSharinguser_Case_name}${str_random}
 														Log out of Cloudcare
-														Close Browser
+														
 
 														
 												

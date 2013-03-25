@@ -15,9 +15,9 @@ Resource		../Common/Coverage_Test_Data.txt
 Launch Browser			[Arguments]			
 						[Documentation]		Open the CommCareHQ Application
 											Open Browser					    	${app_url}              ${browser}
+											Delete All Cookies
 											Maximize Browser Window
-											 	
-
+											
 Open Cloudcare          [Arguments]  		${username}		${password}  	  
 						[Documentation]		Login to the Cloudcare application
 											Wait Until Page Contains Element     	${lnk_home_signin}	    ${timeout}
@@ -48,36 +48,67 @@ Form Set Value Choice	[Arguments]			${queslabel}		${setvalue}
 											Click Button							${Form_que_name}${queslabel}${Form_value_set1}${setvalue}${Form_value_set2}	
 											Set Global Variable	${valueset}	${setvalue}
 											
+											
 Form Set Value Text 	[Arguments]			${queslabel1}		${inputtext}	
 						[Documentation]		Enter the input values
-											Wait Until Page Contains Element		${Form_Input_Value1}${queslabel1}${Form_Input_Value2}											${timeout}	
+											Wait Until Page Contains Element		${Form_Input_Value1}${queslabel1}${Form_Input_Value2}		${timeout}	
 											Input Text								${Form_Input_Value1}${queslabel1}${Form_Input_Value2}		${inputtext}
-											
-											
+											Press Key								${Form_Input_Value1}${queslabel1}${Form_Input_Value2}		\\9
+													
+								
 Form Set Value Checkbox	[Arguments]			${queslabel2}		${chkboxvalue}	
 						[Documentation]		Set/Unset the checkbox
-											Wait Until Page Contains Element		${Form_que_name}${queslabel2}${Form_value_set1}${chkboxvalue}${Form_value_set2}					${timeout}
-											Click Button							${Form_que_name}${queslabel2}${Form_value_set1}${chkboxvalue}${Form_value_set2}
-				
+											Wait Until Page Contains Element		${Form_que_name1}${queslabel2}${Form_value_set11}${chkboxvalue}${Form_value_set12}					${timeout}
+											Click Button							${Form_que_name1}${queslabel2}${Form_value_set11}${chkboxvalue}${Form_value_set12}
+											
 
 Validate Validation Error	[Arguments]		${queslabel2}		${errormessage}		
-							[Documentation]	Validate Whether the validation message appears(if an invalid value is set). 
+						[Documentation]	Validate Whether the validation message appears(if an invalid value is set). 
 											Wait Until Page Contains Element	${Form_error_handle1}${queslabel2}${Form_error_handle2}${errormessage}${Form_error_handle3}			${timeout}
 											Page Should Contain Element			${Form_error_handle1}${queslabel2}${Form_error_handle2}${errormessage}${Form_error_handle3}
 					
 Validate Required Error		[Arguments]		
-							[Documentation]	Validate the required Error on submitting a form if no value is filled in for a required question. 
+						[Documentation]	Validate the required Error on submitting a form if no value is filled in for a required question. 
 											Sleep			${5s_sleep}
 											${status}=		App Verify Alert Present
 											Run Keyword If		'${status}'=='True'		Confirm Action
-	
+											
+Validate Expected Message	[Arguments]		${expmessage}					
+							[Documentation]	Verify Expected Form message
+											Wait Until Page Contains Element 		${val_exp_msg1}${expmessage}${val_exp_msg2}					${timeout}	
+											Page Should Contain Element				${val_exp_msg1}${expmessage}${val_exp_msg2}	 			
+											Sleep			${2s_sleep}
+
+Validate Expected Error Message	[Arguments]	${expmessage}					
+						[Documentation]	Verify Expected error message
+											Sleep			${2s_sleep}
+											Wait Until Page Contains Element		${btn_exp_err_msg1}${expmessage}${btn_exp_err_msg2}			${timeout}	
+											Page Should Contain Element				${btn_exp_err_msg1}${expmessage}${btn_exp_err_msg2}	
+											
+
+Validate Expected Question Label	[Arguments]		${rad_select}	${valueset}		${expqueslabel}					
+						[Documentation]		Verify Expected questions based on selection of radio buttons(${valueset} value passed from	Keyword - Form Set Value Choice)
+											Sleep			${2s_sleep}
+											Wait Until Page Contains Element		${loading_handle}			${timeout}
+											Run Keyword If			'${rad_select}'=='${valueset}'		Element Should Be Visible				${val_exp_label}${expqueslabel}${val_exp_labe2}			
+											Run Keyword Unless		'${rad_select}'=='${valueset}'		Element Should Not Be Visible			${val_exp_label}${expqueslabel}${val_exp_labe2}			
+										
+		
+Validate Filter Condition	[Arguments]			${filtername}		
+						[Documentation]		To validate expected message when no records in table / To validate Filter message when passing invalid input
+											Wait Until Page Contains Element 		${txt_filter}		${timeout}
+											Input Text								${txt_filter}		${filtername}
+											${tbl_text}=	Get Text				${txt_filter_val}
+											Run Keyword If	'${tbl_text}'=='${val_exp_message2}'		Page Should Contain				 	${val_exp_message2}
+											Run Keyword Unless	'${tbl_text}'=='${val_exp_message2}'	Page Should Contain				 	${val_exp_message3}											
+											
 Select Case from List	[Arguments]			${columnname}			${filtername}						
 						[Documentation]		To Select the filtered Case from list
 											Wait Until Page Contains Element		${tbl_forms_caselist_columnname}${columnname}${tbl_forms_caselist_filtername}${filtername}${tbl_forms_caselist_filternameend}								${timeout}
 											Click Element							${tbl_forms_caselist_columnname}${columnname}${tbl_forms_caselist_filtername}${filtername}${tbl_forms_caselist_filternameend}
 											
 Validate Case Information	[Arguments]		${casePropertiesName}			${expectedCasePropertiesValue}
-							[Documentation]	To Validate Case details
+						[Documentation]		To Validate Case details
 											Wait Until Page Contains Element		${propertiesName}${casePropertiesName}${propertiesValue1}${expectedCasePropertiesValue}${propertiesValue2}					${timeout}
 											Page Should Contain Element				${propertiesName}${casePropertiesName}${propertiesValue1}${expectedCasePropertiesValue}${propertiesValue2}
 
@@ -86,48 +117,23 @@ Open Case Form			[Arguments]
 											Wait Until Page Contains Element 		${lnk_selectcases_submit} 		${timeout}
 											Click Element							${lnk_selectcases_submit}
 
-Validate Expected Message	[Arguments]		${expmessage}					
-							[Documentation]	Verify Expected Form message
-											Wait Until Page Contains Element 		${val_exp_msg1}${expmessage}${val_exp_msg2}					${timeout}	
-											Page Should Contain Element				${val_exp_msg1}${expmessage}${val_exp_msg2}	 			
-											Sleep									${5s_sleep}
-														
 Submit Form				[Arguments]
 						[Documentation]		To Submit the form
-											Sleep									${2s_sleep}
-											Wait Until Page Contains Element		${btn_submit}							${timeout}
+											# Below keyword waits and performs the action to handle the "loading" control. It waits until the page loading process gets closed in the screen.
+											Wait Until Page Contains Element		${loading_handle}			${timeout}
+											#After loading control process is closed the form will be submitted.
+											Sleep 	${2s_sleep}
 											Click Element							${btn_submit}
-											${status}=			App Verify Alert Present
-											Run Keyword Unless						'${status}'=='True'			Sleep		${5s_sleep}	
-											Run Keyword And Ignore Error			Run Keyword Unless		'${status}'=='True'			Click Element							${btn_submit}
-											
-											
-Validate Expected Question Label	[Arguments]		${rad_select}	${valueset}		${expqueslabel}					
-						[Documentation]		Verify Expected questions based on selection of radio buttons(${valueset} value passed from	Keyword - Form Set Value Choice)
-											Sleep									${2s_sleep}
-											Wait Until Page Contains Element		${btn_submit}			${timeout}
-											Run Keyword If			'${rad_select}'=='${valueset}'		Element Should Be Visible				${val_exp_label}${expqueslabel}${val_exp_labe2}			
-											Run Keyword Unless		'${rad_select}'=='${valueset}'		Element Should Not Be Visible			${val_exp_label}${expqueslabel}${val_exp_labe2}			
-											
-											
-Validate Filter Condition		[Arguments]			${filtername}		
-						[Documentation]		To validate expected message when no records in table / To validate Filter message when passing invalid input
-											${status} 	${value}=	Run Keyword And Ignore Error 	Wait Until Page Contains			${val_exp_message4}				20					
-											Run Keyword If		'${status.upper()}'=='PASS'			Page Should Contain					${val_exp_message4}
-											Run Keyword If		'${status.upper()}'=='PASS'			Click Element						${btn_exp_msg_close}
-											Run Keyword Unless	'${status.upper()}'=='PASS'			Wait Until Page Contains Element 	${txt_filter}					${timeout}
-											Run Keyword Unless	'${status.upper()}'=='PASS'			Input Text							${txt_filter}					${filtername}
-											Run Keyword Unless	'${status.upper()}'=='PASS'			Page Should Contain				 	${val_exp_message2}				 													
-			
+										
 Select Report			[Arguments]			${Reportname}
 						[Documentation]		To Select the report
 											Wait Until Page Contains Element		${lnk_Reports_name1}${Reportname}${lnk_Reports_name2}								${timeout}
 											Click Element							${lnk_Reports_name1}${Reportname}${lnk_Reports_name2}			
 
-Report Filters 			[Arguments]			${workername}
+Report Filters 			[Arguments]			${UserType}			${workername}
 						[Documentation]		To Select the filter values
-											Wait Until Page Contains Element 		${btn_MobileWorkers}			${timeout}
-											Click Button							${btn_MobileWorkers}
+											Wait Until Page Contains Element 		${btn_MobileWorkers1}${UserType}${btn_MobileWorkers2}			${timeout}
+											Click Button							${btn_MobileWorkers1}${UserType}${btn_MobileWorkers2}
 											Click Element							${Ink_UserType}		
 											Click Element							${lnk_Select1}${workername}${lnk_Select2}
 											Click Button							${btn_Apply}	

@@ -7,7 +7,11 @@ Resource		../Common/Common_Variables.txt
 Resource		../Common/Keywords_lib.txt
 Resource		../Common/Objects_Respository.txt
 Resource		../Common/BasicTests_Test_Data.txt
+Resource		../Common/Cleanup_Cases.txt
 Suite Setup		Generate Random Variable str_random
+# Keyword Will clean up the case created by test if test fails or completed.
+Suite Teardown		Run Keyword And Ignore Error		Cleanup Close Cases		
+	
 
 *** Test Cases*** 
 
@@ -15,7 +19,7 @@ Suite Setup		Generate Random Variable str_random
 
 Launch Application				
 							[Documentation]	To Launch CommCare application.
-							[Tags]	Smoke		Regression
+							[Tags]	Smoke		Regression1 
 														Launch Browser
 																												
 Basic Tests -> First Form		
@@ -31,13 +35,14 @@ Basic Tests -> First Form
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
 														Select Report					${Report_name}
-														Report Filters					${Val_mobile_worker1}
-														Validate Report					${Form_name1}			${Firstform_name}${str_random}		
+														Report Filters					${User_Type1}			${Val_mobile_worker1}
+														Validate Report					${Form_name1}			${Firstform_name}${str_random}
+														# Post Condition performs log out action if any cases are failed and will execute next test case
 							[Postcondition]				Log out of Cloudcare
 							
 Basic Tests -> New Case		
 							[Documentation]		To Verify user able to create New Case(passing Random variable for New Case name) and validate in Submit History Report.
-							[Tags]	Smoke		Regression
+							[Tags]	Smoke		Regression1
 														Open Cloudcare					${username1}			${password1}
 														Select Application				Basic Test
 														Select Module			    	Basic Test
@@ -51,9 +56,10 @@ Basic Tests -> New Case
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
 														Select Report					${Report_name}
-														Report Filters					${Val_mobile_worker1}
-														Validate Report					${Form_name2}			${Case_name}${str_random}		
-														Log out of Cloudcare
+														Report Filters					${User_Type1}			${Val_mobile_worker1}
+														Validate Report					${Form_name2}			${Case_name}${str_random}
+														# Post Condition performs log out action if any cases are failed and will execute next test case														
+							[Postcondition]				Log out of Cloudcare
 							
 Basic Tests -> Update Case		
 							[Documentation]		To Verify user able to Update Case and validate in Submit History Report.
@@ -74,25 +80,27 @@ Basic Tests -> Update Case
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
 														Select Report					${Report_name}
-														Report Filters					${Val_mobile_worker1}
+														Report Filters					${User_Type1}			${Val_mobile_worker1}
 														Validate Report					${Form_name3}			blue
-						[Postcondition]					Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 							
 Basic Tests -> Close Case		
 							[Documentation]		To Verify user able to Close Case.
-							[Tags]	Smoke		Regression
+							[Tags]	Smoke		Regression1
 														Open Cloudcare					${username1}			${password1}
 														Select Application				Basic Test
 														Select Module			    	Basic Test
 														Select Form						Close Case
-														Select case from list			Name					${Case_name}${str_random}				
+														Select case from list			Name					${Case_name}${str_random}1				
 														Validate Case Information 		Name					${Case_name}${str_random}
 														Validate Case Information		Eye Colour				blue
 														Open Case Form				
 														Form Set Value Text				${CLC_ques1}			Close
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
-														Log out of Cloudcare
+														# Post Condition performs log out action if any cases are failed and will execute next test case
+							[Postcondition]				Log out of Cloudcare
 														
 Basic Tests -> Validate Close Case		
 							[Documentation]		To verify whether case is closed and validate in Submit History Report.
@@ -105,8 +113,9 @@ Basic Tests -> Validate Close Case
 														Log out of Cloudcare
 														Open Cloudcare					${username2}			${password2}
 														Select Report					${Report_name}
-														Report Filters					${Val_mobile_worker1}
+														Report Filters					${User_Type1}			${Val_mobile_worker1}
 														Validate Report					${Form_name4}			Close
+														# Post Condition performs log out action if any cases are failed and will execute next test case
 							[Postcondition]				Log out of Cloudcare
 																												
 Basic Tests -> CloudCare Navigation
@@ -120,15 +129,12 @@ Basic Tests -> CloudCare Navigation
 														Select Application				Basic Test
 														Select Module			    	Basic Test
 														Log out of Cloudcare
-														Close Browser
-												
-
-
+														
+						
 
 														
-	
-	
+																									
 
-	
-														
+
+
 																					

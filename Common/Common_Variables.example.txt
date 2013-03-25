@@ -1,0 +1,31 @@
+*** Variables ***
+
+${timeout}			                 40
+${2s_sleep}							 2
+${5s_sleep}					         5
+${browser}							 gc
+${app_url}					         http://www.commcarehq.org/
+${username1} 						 foo@domain.commcarehq.org
+${password1} 						 123
+${username2} 						 foo@example.com
+${password2} 						 123
+${username3} 						 bar@domain.commcarehq.org
+
+#Validate Exp Message#
+${val_exp_message1}					Form successfully saved.	
+${val_exp_message2}					No matching records found
+${val_exp_message3}					No data available in table
+${val_exp_message4}					Unable to load the case list.${SPACE*1}If you are using a filter expression please double check the syntax and try again.${SPACE*1}Please report an issue if this problem persists.
+${val_exp_message5}					internal error handling request: <type 'org.javarosa.xpath.XPathMissingInstanceException'>: org.javarosa.xpath.XPathMissingInstanceException: XPath evaluation: Instance referenced by instance(casedb)/casedb/case/cost does not exist
+${val_exp_message6}					internal error handling request: <type 'org.javarosa.xpath.XPathTypeMismatchException'>: org.javarosa.xpath.XPathTypeMismatchException: XPath evaluation: type mismatch Location /data/accept_referral_group/route was not found
+
+
+
+#Report Filter Data#
+${User_Type1}						Mobile Worker
+${Val_mobile_worker1}				foo
+${Val_mobile_worker2}				bar
+
+#Report Name#
+${Report_name}                 		Submit History
+

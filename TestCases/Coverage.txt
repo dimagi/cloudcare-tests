@@ -27,26 +27,25 @@ Coverage -> Datatypes-> Basic Forms 1
 														Select Form						Datatypes
 														Form Set Value Text				${DT_ques1}					good
 														Form Set Value Text				${DT_ques2}					abc
+														Validate Validation Error		${DT_ques2}					${val_DT_err_message1}
+														Form Set Value Text				${DT_ques2}					123
 														Form Set Value Text				${DT_ques3}					ddd
+														Validate Validation Error		${DT_ques3}					${val_DT_err_message2}
+														Form Set Value Text				${DT_ques3}					456
 														Form Set Value Text				${DT_ques4}					01/08/2012
 														Form Set Value Text				${DT_ques5}					ccc
+														Validate Validation Error		${DT_ques5}					${val_DT_err_message3}
+														Form Set Value Text				${DT_ques5}					21:15
 														Form Set Value Text				${DT_ques6}					life
 														Form Set Value Text				${DT_ques7}					fff
+														Validate Validation Error		${DT_ques7}					${val_DT_err_message1}
+														Form Set Value Text				${DT_ques7}					789
 														Form Set Value Text				${DT_ques8}					000
 														Form Set Value Choice			${DT_ques_radiobtn}			One
 														Form Set Value Checkbox			${DT_ques_chkbox}			Two	
 														Submit Form
-														Validate Required Error
-														Validate Validation Error		${DT_ques2}					${val_DT_err_message1}
-														Form Set Value Text				${DT_ques2}					123
-														Validate Validation Error		${DT_ques3}					${val_DT_err_message2}
-														Form Set Value Text				${DT_ques3}					456
-														Validate Validation Error		${DT_ques5}					${val_DT_err_message3}
-														Form Set Value Text				${DT_ques5}					21:15
-														Validate Validation Error		${DT_ques7}					${val_DT_err_message1}
-														Form Set Value Text				${DT_ques7}					789
-														Submit Form
 														Validate Expected Message		${val_exp_message1}
+														# Post Condition performs log out action if any cases are failed and will execute next test case
 								[Postcondition]			Log out of Cloudcare
 														
 																
@@ -69,6 +68,7 @@ Coverage -> Groups-> Basic Forms 2
 														Validate Expected Question Label	No						${valueset}				${GR_outergroup1}
 														Submit Form
 														Validate Expected Message			${val_exp_message1}
+														# Post Condition performs log out action if any cases are failed and will execute next test case
 								[Postcondition]			Log out of Cloudcare
 														
 Coverage -> Constraints-> Basic Forms 3
@@ -80,17 +80,19 @@ Coverage -> Constraints-> Basic Forms 3
 														Select Form					Constraints
 														Form Set Value Text			${CN_ques1}						Wrong
 														Form Set Value Text			${CN_ques2}						45
-														Submit Form
-														Validate Required Error
 														Validate Validation Error	${CN_ques2}						${val_CN_err_message1}
 														Form Set Value Text			${CN_ques2}						7898909
+														Validate Validation Error	${CN_ques2}						${val_CN_err_message1}
+														Form Set Value Text			${CN_ques2}						123
+														Submit Form
+														Validate Required Error
 														Validate Validation Error	${CN_ques3}						${val_CN_err_message2}
 														Form Set Value Text			${CN_ques3}						queen
-														Validate Validation Error	${CN_ques2}						${val_CN_err_message1}
-														Form Set Value Text			${CN_ques2}						123	
 														Submit Form
 														Validate Expected Message	${val_exp_message1}	
+														# Post Condition performs log out action if any cases are failed and will execute next test case
 								[Postcondition]			Log out of Cloudcare
+														
 														
 Coverage -> Edge Cases> Basic Forms 5													
 							[Documentation]	To verify user is able to enter values and save the References form. 
@@ -110,5 +112,8 @@ Coverage -> Edge Cases> Basic Forms 5
 														Submit Form
 														Validate Expected Message			${val_exp_message1}	
 														Log out of Cloudcare
-														Close Browser																											
+																																									
 																										
+
+														
+														
