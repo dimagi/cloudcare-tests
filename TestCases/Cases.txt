@@ -20,7 +20,7 @@ Suite Teardown		Run Keyword And Ignore Error		Run Keywords	Cleanup Case Close		C
 
 Launch Application				
 							[Documentation]	To Launch CommCare application.
-							[Tags]	Smoke		Regression1
+							[Tags]	Smoke		Regression
 														Launch Browser
 
 Cases -> Don't create a case	
@@ -440,7 +440,7 @@ Cases -> Case Tests -> Case Sharing 3 -> Close shared case
 														Select Module			    	Case Tests
 														Select Form						Case Update
 														Validate Filter Condition		${CaseSharinguser_Case_name}${str_random}
-														Log out of Cloudcare
+							[Postcondition]				Log out of Cloudcare
 														
 
 														

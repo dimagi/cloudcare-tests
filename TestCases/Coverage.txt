@@ -111,7 +111,8 @@ Coverage -> Edge Cases> Basic Forms 5
 														Form Set Value Text					${radio_ques2_ans2}		best
 														Submit Form
 														Validate Expected Message			${val_exp_message1}	
-														Log out of Cloudcare
+								[Postcondition]			Log out of Cloudcare
+														Close Browser
 																																									
 																										
 

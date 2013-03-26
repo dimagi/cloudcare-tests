@@ -19,7 +19,7 @@ Suite Teardown		Run Keyword And Ignore Error		Cleanup Close Cases
 
 Launch Application				
 							[Documentation]	To Launch CommCare application.
-							[Tags]	Smoke		Regression1 
+							[Tags]	Smoke		Regression 
 														Launch Browser
 																												
 Basic Tests -> First Form		
@@ -42,7 +42,7 @@ Basic Tests -> First Form
 							
 Basic Tests -> New Case		
 							[Documentation]		To Verify user able to create New Case(passing Random variable for New Case name) and validate in Submit History Report.
-							[Tags]	Smoke		Regression1
+							[Tags]	Smoke		Regression
 														Open Cloudcare					${username1}			${password1}
 														Select Application				Basic Test
 														Select Module			    	Basic Test
@@ -87,12 +87,12 @@ Basic Tests -> Update Case
 							
 Basic Tests -> Close Case		
 							[Documentation]		To Verify user able to Close Case.
-							[Tags]	Smoke		Regression1
+							[Tags]	Smoke		Regression
 														Open Cloudcare					${username1}			${password1}
 														Select Application				Basic Test
 														Select Module			    	Basic Test
 														Select Form						Close Case
-														Select case from list			Name					${Case_name}${str_random}1				
+														Select case from list			Name					${Case_name}${str_random}				
 														Validate Case Information 		Name					${Case_name}${str_random}
 														Validate Case Information		Eye Colour				blue
 														Open Case Form				
@@ -128,7 +128,7 @@ Basic Tests -> CloudCare Navigation
 														Select Form						Other
 														Select Application				Basic Test
 														Select Module			    	Basic Test
-														Log out of Cloudcare
+							[Postcondition]				Log out of Cloudcare
 														
 						
 

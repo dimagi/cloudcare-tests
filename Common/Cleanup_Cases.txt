@@ -24,6 +24,7 @@ Cleanup Close Cases			[Arguments]
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Log out of Cloudcare
+														Close Browser
 														
 														
 Cleanup Case Close			[Arguments]	
@@ -88,7 +89,6 @@ Cleanup Casesharinguser Case	[Arguments]
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Log out of Cloudcare														
-
 														
 Cleanup Sub Case One		[Arguments]	
 							[Documentation]		To Clean up the Sub Case One Form.
@@ -127,6 +127,7 @@ Cleanup Sub Case Two		[Arguments]
 														Submit Form
 														Validate Expected Message		${val_exp_message1}
 														Log out of Cloudcare
+														Close Browser
 														
 
 	
